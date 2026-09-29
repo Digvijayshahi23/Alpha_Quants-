@@ -123,6 +123,13 @@ export const metricHeader = (m: Metric) =>
 /** Where and how an Alpha ran. */
 export const SETTING_COLUMNS: Column<RankedAlpha>[] = [
   {
+    key: 'alphaId',
+    header: 'Alpha ID',
+    width: 'minmax(96px,1fr)',
+    sortable: true,
+    cell: (r) => <span className="num truncate">{r.alphaId || DASH}</span>,
+  },
+  {
     key: 'region',
     header: 'Region',
     width: 'minmax(70px,0.7fr)',
@@ -170,6 +177,8 @@ export function compareAlphas(a: RankedAlpha, b: RankedAlpha, sort: Sort): numbe
         return (r.settings?.['delay'] as number | undefined) ?? null
       case 'failed':
         return r.failedChecks.length
+      case 'alphaId':
+        return r.alphaId
       default:
         return (r as unknown as Record<string, string | number | null>)[sort.key] ?? null
     }
