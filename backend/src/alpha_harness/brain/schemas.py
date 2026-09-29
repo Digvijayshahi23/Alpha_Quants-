@@ -413,7 +413,7 @@ class BulkField(msgspec.Struct, rename="camel"):
     user_count: int | None = None
     alpha_count: int | None = None
     pyramid_multiplier: float | None = None
-    themes: list[str] | None = None
+    themes: list[Any] | None = None
     #: When BRAIN first offered the field here. New fields are uncrowded by construction.
     date_created: date | None = None
     #: How many regions hold this field. Only region ``ALL`` sends it, and it is the one
