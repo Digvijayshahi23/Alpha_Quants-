@@ -171,10 +171,12 @@ class BrainClient:
             headers={"User-Agent": "alpha-harness/0.1 (local research studio)"},
         )
 
-    # -- lifecycle -------------------------------------------------------
-
     async def aclose(self) -> None:
         await self._client.aclose()
+
+    def clear_pause(self) -> None:
+        """Reset the global rate limit pause. Useful after authentication."""
+        self._resume_at = 0.0
 
     # -- cookie jar ------------------------------------------------------
 
@@ -281,10 +283,11 @@ class BrainClient:
         """
         clean_params = {k: v for k, v in params.items() if v is not None} if params else None
 
-        # Re-checked after each sleep: another 429 may have pushed the pause further out.
-        # Jittered so every waiter does not re-send in the same tick and draw another 429.
-        while (wait := self._resume_at - time.monotonic()) > 0:  # noqa: ASYNC110
-            await asyncio.sleep(wait + random.uniform(0.05, 0.25))
+        # Authentication paths bypass the global rate limit pause. A 429 on an alpha fetch
+        # must not stop the user signing in to fix it.
+        if path not in {"/captcha", "/authentication", "/authentication/persona"}:
+            while (wait := self._resume_at - time.monotonic()) > 0:  # noqa: ASYNC110
+                await asyncio.sleep(wait + random.uniform(0.05, 0.25))
 
         bucket = self._bucket(path)
         await self._reserve(bucket)

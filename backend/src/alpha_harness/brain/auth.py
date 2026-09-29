@@ -160,6 +160,7 @@ class Authenticator:
             permissions=state.permissions,
             elapsed_s=round(time.monotonic() - started, 2),
         )
+        self.endpoints.client.clear_pause()
         return SessionInfo.from_state(state)
 
     async def verify(self, inquiry: str) -> SessionInfo | None:
@@ -205,6 +206,7 @@ class Authenticator:
         if state.user_id is None:
             return None
         log.info("brain.auth.verified", user_id=state.user_id)
+        self.endpoints.client.clear_pause()
         return SessionInfo.from_state(state)
 
     async def status(self) -> SessionInfo:
