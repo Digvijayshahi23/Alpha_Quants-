@@ -367,59 +367,54 @@ class BrainClient:
         body = r.body
         detail = body.get("detail") if isinstance(body, dict) else None
 
-        if r.status == 401:
-            inquiry, inquiry_url = self._persona_challenge(r)
-            if inquiry:
-                # Biometric step-up, not a credential failure (02-authentication.md).
-                return BrainVerificationRequired(
-                    "BRAIN requires identity verification before this session can be used.",
-                    inquiry=inquiry,
-                    url=inquiry_url,
+        match r.status:
+            case 401:
+                inquiry, inquiry_url = self._persona_challenge(r)
+                if inquiry:
+                    # Biometric step-up, not a credential failure (02-authentication.md).
+                    return BrainVerificationRequired(
+                        "BRAIN requires identity verification before this session can be used.",
+                        inquiry=inquiry,
+                        url=inquiry_url,
+                        body=body,
+                    )
+                return BrainAuthError(
+                    f"{where}: not authenticated ({detail or 'session expired'})",
+                    status=401,
+                    body=body,
+                    detail=detail if isinstance(detail, str) else None,
+                )
+            case 403:
+                return BrainForbidden(
+                    f"{where}: forbidden ({detail or 'account lacks permission for this request'})",
+                    status=403,
+                    body=body,
+                    detail=detail if isinstance(detail, str) else None,
+                )
+            case 404:
+                return BrainNotFound(f"{where}: not found", status=404, body=body)
+            case 400:
+                fields = body if isinstance(body, dict) else {"detail": body}
+                return BrainValidationError(
+                    f"{where}: rejected by the platform", fields=fields, body=body
+                )
+            case 429:
+                if detail == DAILY_LIMIT_DETAIL:
+                    return BrainDailyLimitReached(
+                        "Daily simulation limit reached. Please try tomorrow (EST time zone).",
+                        body=body,
+                    )
+                return BrainRateLimited(
+                    f"{where}: rate limited ({detail or 'too many requests'})",
+                    retry_after=r.retry_after,
                     body=body,
                 )
-            return BrainAuthError(
-                f"{where}: not authenticated ({detail or 'session expired'})",
-                status=401,
-                body=body,
-                detail=detail if isinstance(detail, str) else None,
-            )
-
-        if r.status == 403:
-            return BrainForbidden(
-                f"{where}: forbidden ({detail or 'account lacks permission for this request'})",
-                status=403,
-                body=body,
-                detail=detail if isinstance(detail, str) else None,
-            )
-
-        if r.status == 404:
-            return BrainNotFound(f"{where}: not found", status=404, body=body)
-
-        if r.status == 400:
-            fields = body if isinstance(body, dict) else {"detail": body}
-            return BrainValidationError(
-                f"{where}: rejected by the platform", fields=fields, body=body
-            )
-
-        if r.status == 429:
-            if detail == DAILY_LIMIT_DETAIL:
-                return BrainDailyLimitReached(
-                    "Daily simulation limit reached. Please try tomorrow (EST time zone).",
-                    body=body,
-                )
-            return BrainRateLimited(
-                f"{where}: rate limited ({detail or 'too many requests'})",
-                retry_after=r.retry_after,
-                body=body,
-            )
-
-        if r.status == 503:
-            return BrainServiceUnavailable(f"{where}: service unavailable", status=503, body=body)
-
-        if r.status >= 500:
-            return BrainServerError(f"{where}: server error {r.status}", status=r.status, body=body)
-
-        return BrainError(f"{where}: unexpected status {r.status}", status=r.status, body=body)
+            case 503:
+                return BrainServiceUnavailable(f"{where}: service unavailable", status=503, body=body)
+            case _ if r.status >= 500:
+                return BrainServerError(f"{where}: server error {r.status}", status=r.status, body=body)
+            case _:
+                return BrainError(f"{where}: unexpected status {r.status}", status=r.status, body=body)
 
     async def request_retrying(
         self,

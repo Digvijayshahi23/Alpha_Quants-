@@ -146,12 +146,11 @@ export function SubmissionPlannerScreen() {
                 aria-pressed={on}
                 onClick={() =>
                   setPicked((prev: ReadonlySet<number>) => {
-                    const next = new Set<number>(prev.size ? prev : usable.map((u) => u.id))
+                    if (prev.size === 0) return new Set([t.id])
+                    const next = new Set(prev)
                     if (next.has(t.id)) next.delete(t.id)
                     else next.add(t.id)
-                    // The last one will not come off: nothing selected is nothing to plan,
-                    // and silently reverting to every task reads as the click misfiring.
-                    return next.size ? next : prev
+                    return next
                   })
                 }
                 className={`rounded-sm border px-2 py-1 text-caption transition-colors ${
