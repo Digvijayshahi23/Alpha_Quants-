@@ -3,16 +3,16 @@
 Nothing here calls the LLM or simulates; the preview shows the exact first prompt.
 """
 
-from __future__ import annotations
-
 from typing import Any
 
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
+from ..catalog.queries import FieldFilter
 from ..db.models import utcnow
 from ..labs import power_pool, search
 from ..labs.launch import (
+    NO_NEUTRALIZATION,
     NO_SIMULATIONS,
     OPERATORS_UNREAD,
     AddedTask,
@@ -24,7 +24,6 @@ from ..labs.launch import (
 )
 from ..labs.params import POWER_POOL_SAMPLER, PowerPoolParams
 from ..llm.prompts import POWER_POOL_LAB
-from ..llm.registry import DEFAULT_MODEL
 from ..llm.text import estimate_tokens
 from ..schemas import Out
 from .deps import State, refuse
@@ -38,17 +37,21 @@ class PowerPoolRequest(BaseModel):
     universe: str
     dataset_ids: list[str] = Field(default_factory=list, max_length=50)
     model: str | None = None
-    #: Empty keeps every neutralization BRAIN offers; anything here is drawn from instead.
+    #: What the LLM draws from. Empty is refused: see ``NO_NEUTRALIZATION``.
     neutralizations: list[str] = Field(default_factory=list, max_length=20)
+    #: The universes each Alpha is drawn from. Empty means every downloaded one.
+    universes: list[str] = Field(default_factory=list, max_length=20)
     cores: int = Field(default=search.MAX_CORES, ge=1, le=search.MAX_CORES)
     simulations: int = Field(default=0, ge=0, le=search.MAX_SIMULATIONS)
+    #: The Data Explorer's filter the datasets were chosen under: only fields it shows are used.
+    field_filter: FieldFilter | None = None
 
 
 class PowerPoolModel(Out):
     id: str
-    label: str
+    #: How the request names it: provider and id together.
+    ref: str
     provider: str
-    tpm: int
     remaining_today: int
 
 
@@ -75,34 +78,30 @@ class PowerPoolPreview(Out):
 
 
 async def _models(state: Any) -> list[dict[str, Any]]:
-    """Models whose provider has an enabled Key, richest daily budget first."""
+    """Set-up models whose provider has an enabled Key, most requests left today first."""
     keys = [k for k in await state.llm.keys.list_keys() if k.enabled]
     out = []
     for m in state.llm.registry.all():
         mine = [k for k in keys if k.provider == m.provider]
-        if m.kind == "embedding" or not mine:
+        if not mine:
             continue
-        left = sum([(await state.llm.ledger.headroom(k.id, m)).daily_remaining for k in mine])
-        out.append(
-            {
-                "id": m.id,
-                "label": m.label,
-                "provider": m.provider,
-                "tpm": m.tpm,
-                "remainingToday": left,
-            }
+        left = sum(
+            [
+                (await state.llm.ledger.headroom(k.id, m, cap=k.daily_limit)).daily_remaining
+                for k in mine
+            ]
         )
-    return out
+        out.append({"id": m.id, "ref": m.ref, "provider": m.provider, "remainingToday": left})
+    return sorted(out, key=lambda m: -m["remainingToday"])
 
 
 @router.get("/options")
 async def options(state: State) -> PowerPoolOptions:
     models = await _models(state)
-    ids = [m["id"] for m in models]
     return PowerPoolOptions.model_validate(
         {
             "models": models,
-            "defaultModel": DEFAULT_MODEL if DEFAULT_MODEL in ids else (ids[0] if ids else None),
+            "defaultModel": models[0]["ref"] if models else None,
             "maxSimulations": search.MAX_SIMULATIONS,
         }
     )
@@ -116,28 +115,42 @@ async def _plan(body: PowerPoolRequest, state: Any) -> dict[str, Any]:
         problems.append(OPERATORS_UNREAD)
     if not body.dataset_ids:
         problems.append("Choose at least one dataset.")
-    models = {m["id"]: m for m in await _models(state)}
-    model_id = body.model or DEFAULT_MODEL
-    info = state.llm.registry.get(model_id)
-    if model_id not in models or info is None:
-        problems.append(f"{model_id} can't run: no enabled Key for it. Add one in LLM Integration.")
+    models = {m["ref"]: m for m in await _models(state)}
+    ref = body.model or next(iter(models), "")
+    info = state.llm.registry.get(ref)
+    if not ref:
+        problems.append("No model is set up. Set one up under LLM Integration › Models.")
+    elif info is None:
+        problems.append(f"{ref} is not set up. Set it up under LLM Integration › Models.")
+    elif info.ref not in models:
+        problems.append(f"{info.id} can't run: no enabled Key for it. Add one in LLM Integration.")
 
     schema = await state.metadata.cached_settings_schema()
     legal = legal_choices(schema, body.region, body.delay)
     universes = await synced_universes(state, legal, body.region, body.delay, body.universe)
-    # Every neutralization BRAIN offers, not only the four the other labs default to: the LLM
-    # draws from the market's whole list, which is deliberate diversity. A chosen few narrow
-    # that; choosing none keeps the whole list.
+    if body.universes and universes:
+        chosen = [u for u in universes if u in set(body.universes)]
+        if not chosen:
+            problems.append(
+                f"None of the chosen universes is downloaded for {body.region} delay "
+                f"{body.delay}. Sync it in the Data Explorer, or choose another."
+            )
+        universes = chosen
+    # The LLM draws from whichever the reader chose, in BRAIN's order.
     offered = [str(n) for n in choices(legal, "neutralization") if n != "NONE"]
     wanted = set(body.neutralizations)
-    neutralizations = [n for n in offered if n in wanted] or offered
+    neutralizations = [n for n in offered if n in wanted]
     if not universes:
         problems.append(
             f"No {body.region} delay {body.delay} market is downloaded. "
             "Sync it in the Data Explorer."
         )
-    if not neutralizations:
+    if not body.neutralizations:
+        problems.append(NO_NEUTRALIZATION)
+    elif not offered:
         problems.append("BRAIN's settings list is not loaded. Sign in again.")
+    elif not neutralizations:
+        problems.append(f"BRAIN offers none of the chosen neutralizations in {body.region}.")
 
     fields = 0
     prompt = None
@@ -150,17 +163,22 @@ async def _plan(body: PowerPoolRequest, state: Any) -> dict[str, Any]:
     if universes:
         for dataset in body.dataset_ids:
             ctx = await power_pool.context_for(
-                state.catalog, body.region, body.delay, universes, dataset
+                state.catalog, body.region, body.delay, universes, dataset, body.field_filter
             )
             if ctx is None:
                 problems.append(
                     f"{dataset} is not in the downloaded {body.region} delay {body.delay} catalog."
                 )
                 continue
+            if body.field_filter and not ctx.fields:
+                problems.append(
+                    f"No field in {dataset} matches the Data Explorer filter. "
+                    "Untick it, or loosen the filter."
+                )
             fields += len(ctx.fields)
             if prompt is None and info is not None and operators:
                 user, shown = power_pool.user_prompt(
-                    ctx, operators, run, "None yet.", 0, power_pool.budget_for(info)
+                    ctx, operators, run, "None yet.", 0, info.prompt_tokens
                 )
                 prompt = {
                     "system": POWER_POOL_LAB,
@@ -169,15 +187,16 @@ async def _plan(body: PowerPoolRequest, state: Any) -> dict[str, Any]:
                 }
                 if ctx.fields and shown < min(10, len(ctx.fields)):
                     problems.append(
-                        f"The prompt does not fit {info.label}'s tokens per minute. "
-                        "Choose another model."
+                        f"Only {shown} of {dataset}'s fields fit in {info.id}'s "
+                        f"{info.prompt_tokens:,} prompt tokens, too few to work with. Raise its "
+                        "Max Prompt Tokens, or choose another dataset."
                     )
     calls = -(-body.simulations // power_pool.PER_CALL)
-    if model_id in models and calls > models[model_id]["remainingToday"]:
+    left = models[info.ref]["remainingToday"] if info and info.ref in models else None
+    if info is not None and left is not None and calls > left:
         warnings.append(
-            f"About {calls:,} LLM calls; {model_id} has "
-            f"{models[model_id]['remainingToday']:,} left today, "
-            "so the task waits for the reset at midnight Pacific."
+            f"About {calls:,} LLM calls; {info.id} has {left:,} left today, "
+            f"so the task waits for its day to reset at midnight, {info.reset_timezone}."
         )
     return {
         "fields": fields,
@@ -187,7 +206,7 @@ async def _plan(body: PowerPoolRequest, state: Any) -> dict[str, Any]:
         "prompt": prompt,
         "problems": problems,
         "warnings": warnings,
-        "model": model_id,
+        "model": info.ref if info else ref,
     }
 
 
@@ -215,6 +234,11 @@ async def add_task(body: PowerPoolRequest, state: State) -> AddedTask:
             universes=plan["universes"],
             neutralizations=plan["neutralizations"],
             dataset_ids=body.dataset_ids,
+            field_filter=(
+                body.field_filter.model_dump(mode="json", exclude_defaults=True)
+                if body.field_filter
+                else None
+            ),
             model=plan["model"],
             cores=body.cores,
             llm={"calls": 0},

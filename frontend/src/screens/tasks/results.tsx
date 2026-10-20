@@ -13,18 +13,23 @@ import { useMemo, useState } from 'react'
 import { cn } from '@/lib/cn'
 import { DASH, fmt } from '@/lib/format'
 import { useRefetchOn } from '@/lib/ws'
+import { DetailSheet } from '@/screens/pool/detail'
 import { AstInspector } from '@/screens/pool/shared'
 import { AlphaPane } from '@/screens/tasks/alpha-pane'
 import { labTasks, type RankedAlpha } from '@/screens/tasks/api'
 import {
+  ALPHA_ID,
   compareAlphas,
   FAILED_CHECKS,
   Figure,
   METRIC_COLUMNS,
   METRICS,
   metricHeader,
+  PROD_CORRELATION,
   SETTING_COLUMNS,
   setting,
+  TRUNCATION,
+  taskStatus,
 } from '@/screens/tasks/columns'
 import { Button, Empty, ErrorNotice, KV, Metric, Page, PageHeader, Panel, Skeleton } from '@/ui/kit'
 import { type Column, DataTable, type Sort } from '@/ui/table'
@@ -34,7 +39,14 @@ const LIMIT = 2000
 
 const market = (r: RankedAlpha) => setting(r, 'region') || DASH
 
-const columns = (): Column<RankedAlpha>[] => [...SETTING_COLUMNS, FAILED_CHECKS, ...METRIC_COLUMNS]
+const columns = (agent: boolean): Column<RankedAlpha>[] => [
+  ALPHA_ID,
+  ...SETTING_COLUMNS,
+  ...(agent ? [TRUNCATION] : []),
+  PROD_CORRELATION,
+  FAILED_CHECKS,
+  ...METRIC_COLUMNS,
+]
 
 /**
  * What a reader can narrow the table by. Three independent questions, each answerable on its
@@ -115,7 +127,7 @@ function CheckSets({ rows }: { rows: RankedAlpha[] }) {
               s.checks.length === 0 ? (
                 <span className="text-ink-subtle">{DASH}</span>
               ) : (
-                <span className="num truncate text-pnl-negative" title={s.checks.join(', ')}>
+                <span className="num truncate text-pnl-negative-text" title={s.checks.join(', ')}>
                   {s.checks.join(', ')}
                 </span>
               ),
@@ -135,7 +147,7 @@ function CheckSets({ rows }: { rows: RankedAlpha[] }) {
             align: 'right',
             sortable: true,
             cell: (s) => (
-              <span className={cn('num', s.checks.length === 0 && 'text-pnl-positive')}>
+              <span className={cn('num', s.checks.length === 0 && 'text-pnl-positive-text')}>
                 {fmt.int(s.alphas)}
               </span>
             ),
@@ -159,12 +171,13 @@ export function TaskResultsScreen() {
   const { taskId } = useParams({ from: '/tasks/$taskId' })
   const id = Number(taskId)
   const [sort, setSort] = useState<Sort>({ key: 'sharpe', desc: true })
+  const [alphaId, setAlphaId] = useState<string | null>(null)
 
-  const tasks = useQuery({ queryKey: ['tasks'], queryFn: labTasks.list })
+  const tasks = useQuery({ queryKey: ['lab-tasks'], queryFn: labTasks.list })
   const task = tasks.data?.tasks.find((t) => t.id === id)
 
   const top = useQuery({
-    queryKey: ['tasks', id, 'results'],
+    queryKey: ['lab-tasks', id, 'results'],
     queryFn: () => labTasks.top(id, LIMIT),
     enabled: Number.isFinite(id),
   })
@@ -211,7 +224,7 @@ export function TaskResultsScreen() {
     ? (
         [
           ['Decay', task.decay],
-          ['Truncation', task.truncation],
+          ['Truncation', task.truncationAgent ? 'Truncation Agent' : task.truncation],
           ['NaN Handling', task.nanHandling],
           ['Test Period', task.testPeriod],
         ].filter(([, v]) => v != null && v !== '') as [string, string | number][]
@@ -220,7 +233,7 @@ export function TaskResultsScreen() {
 
   // The download reports progress through the task registry, so the rows refresh as its
   // broadcasts land rather than on a timer of their own.
-  useRefetchOn('tasks', ['tasks', id, 'results'], 5000)
+  useRefetchOn('tasks', ['lab-tasks', id, 'results'], 5000)
 
   const green = rows.filter((r) => r.submittable || r.pending).length
   const pending = rows.filter((r) => r.pending).length
@@ -228,12 +241,12 @@ export function TaskResultsScreen() {
   return (
     <Page>
       <PageHeader
-        title={task?.templateName || task?.labName || `Task ${taskId}`}
+        title={task?.name || task?.templateName || task?.labName || `Task ${taskId}`}
         // The lab is the title already; repeating it here spent the one line that says
         // where this task got to.
         description={
           task
-            ? `${task.status}${task.alphaId ? ` · ${task.alphaId}` : ''}`
+            ? `${taskStatus(task).label}${task.alphaId ? ` · ${task.alphaId}` : ''}`
             : 'Every Alpha this task produced'
         }
         actions={
@@ -313,7 +326,7 @@ export function TaskResultsScreen() {
                 width: 'minmax(96px,1fr)',
                 align: 'right',
                 cell: (r) => (
-                  <span className={cn('num', r.submittable > 0 && 'text-pnl-positive')}>
+                  <span className={cn('num', r.submittable > 0 && 'text-pnl-positive-text')}>
                     {fmt.int(r.submittable)}
                   </span>
                 ),
@@ -324,7 +337,7 @@ export function TaskResultsScreen() {
                 width: 'minmax(84px,0.8fr)',
                 align: 'right',
                 cell: (r) => (
-                  <span className={cn('num', r.failed > 0 && 'text-pnl-negative')}>
+                  <span className={cn('num', r.failed > 0 && 'text-pnl-negative-text')}>
                     {fmt.int(r.failed)}
                   </span>
                 ),
@@ -348,7 +361,7 @@ export function TaskResultsScreen() {
       <AlphaPane
         title="Every Alpha"
         rows={rows}
-        columns={columns}
+        columns={() => columns(Boolean(task?.truncationAgent))}
         compare={compareAlphas}
         poolColumnAfter="investability"
         sort={sort}
@@ -356,9 +369,11 @@ export function TaskResultsScreen() {
         loading={top.isPending}
         error={top.error}
         onRefresh={() => top.refetch()}
+        onOpenAlpha={setAlphaId}
       />
 
       <CheckSets rows={rows} />
+      <DetailSheet alphaId={alphaId} onClose={() => setAlphaId(null)} />
     </Page>
   )
 }

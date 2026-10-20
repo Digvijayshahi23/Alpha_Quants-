@@ -7,8 +7,6 @@ hence background tasks with visible progress.
 None of this spends simulation quota. It is all reading results that already exist.
 """
 
-from __future__ import annotations
-
 import asyncio
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Any
@@ -16,9 +14,9 @@ from typing import TYPE_CHECKING, Any
 import structlog
 
 from ..brain.filters import AlphaQuery, Filter
-from ..brain.schemas import Alpha, RecordSet
+from ..brain.schemas import QUICK_MODE, Alpha, RecordSet, SimulationType
 from .store import checks_json
-from .yields import checks_of, clean
+from .yields import checks_of, gating_results
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable, Coroutine
@@ -67,15 +65,19 @@ RETURNS_PROGRESS_STEPS = 50
 IMPORT_LIMIT = 100_000
 
 
-def worth_downloading(alpha: Alpha) -> bool:
+def worth_downloading(alpha: Alpha, allowed: frozenset[str]) -> bool:
     """Whether this alpha's daily PnL is worth a request as soon as it lands.
 
-    Only the ones nothing refused. A refused alpha is never charted, correlated or planned
-    with, so its series is a request and ~2,500 rows spent on something no screen reads --
-    and a full day is 5,000 alphas, of which about one in five is worth keeping.
+    Only when every check that decides anything reads one of ``allowed``, chosen in Settings.
+    The default, PASS, WARNING or PENDING, is the ones nothing refused: a refused alpha is
+    rarely charted, correlated or planned with, so its series is a request and ~2,500 rows
+    spent on something no screen reads -- and a full day is 5,000 alphas, of which about one
+    in five is worth keeping. A quick-mode alpha is never submittable, so never downloaded.
     """
-    mode = alpha.settings.simulation_mode if alpha.settings else None
-    return clean(checks_of(checks_json(alpha)), mode)
+    if alpha.settings is not None and alpha.settings.simulation_mode == QUICK_MODE:
+        return False
+    results = gating_results(checks_of(checks_json(alpha)))
+    return bool(results) and results <= allowed
 
 
 def _warn_unreadable(alpha_id: str, pnl: RecordSet, stored: int) -> None:
@@ -109,6 +111,8 @@ class Backfill:
         self._background: set[asyncio.Task[Any]] = set()
         #: Alphas whose daily PnL was asked for in the background, each once per run.
         self._returns_asked: set[str] = set()
+        #: Check results that let an alpha's PnL download as it lands (Settings). Empty: never.
+        self.pnl_results: frozenset[str] = frozenset({"PASS", "WARNING", "PENDING"})
         #: Alphas waiting for the next shared list read, each with what its caller awaits.
         self._landed: dict[str, asyncio.Future[None]] = {}
         self._drainer: asyncio.Task[None] | None = None
@@ -147,6 +151,14 @@ class Backfill:
         they draw on the same BRAIN rate limit, so two at once finish no sooner.
         """
         return await self._launch(kind, label, lambda task: self._job(task, work))
+
+    def cancel_job(self, kind: str) -> bool:
+        """Stop the running job if it is a ``kind``. Whatever it already saved stays."""
+        job = self._running
+        if job is None or job.done() or job.get_name() != kind:
+            return False
+        job.cancel()
+        return True
 
     async def _launch(
         self, kind: str, label: str, run: Callable[[Task], Coroutine[Any, Any, None]]
@@ -228,7 +240,8 @@ class Backfill:
                 results = page.get("results") or []
                 alphas = [Alpha.model_validate(raw) for raw in results]
                 await self.vault.save_alphas(alphas)
-                ids.extend(a.id for a in alphas)
+                # A region-agnostic parent has no PnL of its own: its submitted children do.
+                ids.extend(a.id for a in alphas if a.type != SimulationType.RA_PARENT)
                 await self.tasks.update(task, detail=f"Listed {len(ids)} SUBMITTED Alphas")
                 if len(results) < PAGE:
                     break
@@ -236,18 +249,17 @@ class Backfill:
 
             # A simulated series never changes, so one already stored is not fetched again.
             missing = await self.vault.lacking_series(ids)
-            for done, alpha_id in enumerate(missing, start=1):
-                try:
-                    await self.fetch_returns(alpha_id)
-                except Exception as exc:  # noqa: BLE001
-                    log.warning("vault.returns_failed", alpha_id=alpha_id, error=str(exc)[:160])
-                await self.tasks.update(
-                    task,
-                    progress=done / len(missing),
-                    detail=f"Downloading PnL and turnover: {done} of {len(missing)}",
-                )
+            failed = await self.fetch_each(
+                task, missing, self.fetch_returns, what="Downloading PnL and turnover"
+            )
+            detail = f"Synced {len(ids)} SUBMITTED Alphas"
+            if failed:
+                detail += f". BRAIN gave no PnL for {len(failed)}: sync again to retry them"
+            await self.tasks.update(task, detail=detail)
             await self.tasks.finish(task)
-            log.info("vault.submitted_synced", alphas=len(ids), fetched=len(missing))
+            log.info(
+                "vault.submitted_synced", alphas=len(ids), fetched=len(missing), failed=len(failed)
+            )
         except asyncio.CancelledError:
             await self.tasks.finish(task, state="cancelled")
             raise
@@ -475,7 +487,7 @@ class Backfill:
 
         # Daily PnL for the ones worth opening, downloaded now rather than when a screen
         # first asks. One request each, so it is the Alphas nothing refused, not all of them.
-        self.schedule_returns([a.id for a in complete if worth_downloading(a)])
+        self.schedule_returns([a.id for a in complete if worth_downloading(a, self.pnl_results)])
 
         asked = set(alpha_ids)
         children = list(dict.fromkeys(c for a in complete for c in a.children if c not in asked))

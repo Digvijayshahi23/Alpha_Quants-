@@ -9,8 +9,8 @@ The frontend talks to this over HTTP + WebSocket only.
 Credentials never leave the backend.
 """
 
-from __future__ import annotations
-
+import asyncio
+import contextlib
 import logging
 import sys
 from contextlib import asynccontextmanager
@@ -30,15 +30,18 @@ from .api import (
     auth,
     catalog,
     chat,
+    competitions,
     ga,
     lab_tasks,
     llm,
     planner,
     portfolio,
     power_pool_lab,
+    preferences,
     quarter,
     search_lab,
     sims,
+    super_lab,
     tasks,
     template_lab,
     today,
@@ -98,12 +101,27 @@ def create_app() -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
-        state = AppState()
-        app.state.harness = state
-        await state.startup()
+        try:
+            state = AppState()
+            app.state.harness = state
+            await state.startup()
+        except Exception as exc:
+            # uvicorn reports this and then exits through a traceback of its own, whose last
+            # lines are all the launcher shows; ``__main__`` says this instead.
+            app.state.startup_failure = exc
+            raise
+
+        async def install(release: updates.Release) -> None:
+            updates.request(release.version, wheel_url=release.wheel_url)
+            await stop_server(getattr(app.state, "server", None))
+
+        watcher = asyncio.create_task(updates.watch(state.engine.idle, install), name="updates")
         try:
             yield
         finally:
+            watcher.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await watcher
             await state.shutdown()
 
     app = FastAPI(
@@ -114,6 +132,11 @@ def create_app() -> FastAPI:
         version=updates.current(),
         lifespan=lifespan,
     )
+
+    # Set by the first request a page of ours makes, so a start straight after an update can
+    # tell whether the page that asked for it came back (see ``__main__``).
+    page_seen = asyncio.Event()
+    app.state.page_seen = page_seen
 
     # DNS rebinding: a page whose hostname resolves to 127.0.0.1 is "same-origin" to the
     # browser, so the header checks below pass. Its Host header still names that hostname.
@@ -140,6 +163,7 @@ def create_app() -> FastAPI:
                 {"detail": {"code": "forbidden", "message": "Writes must come from the app."}},
                 status_code=403,
             )
+        page_seen.set()
         return await call_next(request)
 
     install_exception_handlers(app)
@@ -160,8 +184,11 @@ def create_app() -> FastAPI:
     app.include_router(search_lab.router)
     app.include_router(lab_tasks.router)
     app.include_router(power_pool_lab.router)
+    app.include_router(super_lab.router)
     app.include_router(chat.router)
+    app.include_router(competitions.router)
     app.include_router(update.router)
+    app.include_router(preferences.router)
     app.include_router(ws.router)
     app.include_router(planner.router)
 
@@ -219,12 +246,20 @@ class SinglePageApp(StaticFiles):
     @override
     async def get_response(self, path: str, scope: Scope) -> Response:
         try:
-            return await super().get_response(path, scope)
+            response = await super().get_response(path, scope)
         except StarletteHTTPException as exc:
             # A missing file (``.js``) or API path stays a 404; only UI routes fall back.
             if exc.status_code != 404 or "." in path.rsplit("/", 1)[-1] or path.startswith("api"):
                 raise
-            return await super().get_response("index.html", scope)
+            response = await super().get_response("index.html", scope)
+        # The page is asked for again every time; the scripts it names carry a hash of their
+        # contents, so they never need to be. Without a rule a browser kept the page for a
+        # tenth of its file's age, and after an update showed the old app for hours.
+        if path.startswith("assets/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        else:
+            response.headers["Cache-Control"] = "no-cache"
+        return response
 
 
 app = create_app()

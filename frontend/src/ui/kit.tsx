@@ -8,6 +8,7 @@ import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox'
 import { mergeProps } from '@base-ui/react/merge-props'
 import { Radio } from '@base-ui/react/radio'
 import { RadioGroup } from '@base-ui/react/radio-group'
+import { Switch as BaseSwitch } from '@base-ui/react/switch'
 import { Toggle } from '@base-ui/react/toggle'
 import { ToggleGroup } from '@base-ui/react/toggle-group'
 import { useRender } from '@base-ui/react/use-render'
@@ -32,8 +33,8 @@ export type Tone = 'neutral' | 'muted' | 'profit' | 'loss' | 'warn'
 export const TEXT_TONE: Record<Tone, string> = {
   neutral: 'text-ink',
   muted: 'text-ink-subtle',
-  profit: 'text-pnl-positive',
-  loss: 'text-pnl-negative',
+  profit: 'text-pnl-positive-text',
+  loss: 'text-pnl-negative-text',
   warn: 'text-status-warning',
 }
 
@@ -144,7 +145,7 @@ const BUTTON_VARIANT = {
     'border border-hairline bg-surface-2 text-ink hover:border-hairline-strong hover:bg-surface-3 active:bg-surface-4',
   ghost: 'text-ink-muted hover:bg-surface-2 hover:text-ink active:bg-surface-3',
   danger:
-    'border border-hairline bg-surface-1 text-pnl-negative hover:border-(--btn-danger-border-hover) hover:bg-pnl-negative-tint active:border-pnl-negative',
+    'border border-hairline bg-surface-1 text-pnl-negative-text hover:border-(--btn-danger-border-hover) hover:bg-pnl-negative-tint active:border-pnl-negative',
 }
 const BUTTON_SIZE = {
   md: 'rounded-sm px-3 py-1.5 text-body [&_svg]:size-4',
@@ -240,7 +241,7 @@ export function Field({
 
 function FieldNote({ hint, error }: { hint?: ReactNode; error?: ReactNode }) {
   return error ? (
-    <span role="alert" className="text-body-compact break-words text-pnl-negative">
+    <span role="alert" className="text-body-compact break-words text-pnl-negative-text">
       {error}
     </span>
   ) : (
@@ -253,13 +254,15 @@ export function Fieldset({
   legend,
   hint,
   children,
+  className,
 }: {
   legend: ReactNode
   hint?: ReactNode
   children: ReactNode
+  className?: string
 }) {
   return (
-    <fieldset className="flex min-w-0 flex-col gap-1.5">
+    <fieldset className={cn('flex min-w-0 flex-col gap-1.5', className)}>
       <legend className="text-caption font-medium float-left w-full text-ink-muted">
         {legend}
       </legend>
@@ -330,6 +333,40 @@ export function Checkbox({
   )
 }
 
+/** An on/off setting that takes effect at once, unlike a Checkbox, which is a choice in a form
+ *  submitted later. On reads in the same lavender as a checked box. */
+export function Switch({
+  checked,
+  onChange,
+  disabled,
+  ...props
+}: {
+  checked: boolean
+  onChange: (checked: boolean) => void
+  disabled?: boolean | undefined
+  'aria-label'?: string | undefined
+  'aria-labelledby'?: string | undefined
+  'aria-describedby'?: string | undefined
+}) {
+  return (
+    <BaseSwitch.Root
+      checked={checked}
+      disabled={disabled}
+      onCheckedChange={onChange}
+      className={cn(
+        'relative inline-flex h-5 w-9 shrink-0 items-center rounded-pill border p-0.5 transition-colors',
+        'border-(--field-border) bg-surface-3',
+        'data-[checked]:border-(--btn-primary-bg) data-[checked]:bg-(--btn-primary-bg)',
+        'data-[disabled]:border-(--field-border-disabled) data-[disabled]:opacity-60',
+        !disabled && 'cursor-pointer hover:border-(--field-border-hover)',
+      )}
+      {...props}
+    >
+      <BaseSwitch.Thumb className="size-3.5 rounded-pill bg-ink-muted transition-transform data-[checked]:translate-x-4 data-[checked]:bg-(--btn-primary-text)" />
+    </BaseSwitch.Root>
+  )
+}
+
 /** Multi-choice as toggle chips (Base UI ToggleGroup: pressed state, arrow-key focus). A pressed chip lifts to surface-3. */
 export function Chips<V extends string>({
   items,
@@ -337,12 +374,15 @@ export function Chips<V extends string>({
   onChange,
   label,
   disabled,
+  size = 'md',
 }: {
   items: { value: V; label: ReactNode; title?: string | undefined }[]
   value: V[]
   onChange: (value: V[]) => void
   label: string
   disabled?: boolean | undefined
+  /** `lg` lays a few important choices out as tiles that share the row between them. */
+  size?: 'md' | 'lg'
 }) {
   return (
     <ToggleGroup
@@ -351,14 +391,21 @@ export function Chips<V extends string>({
       value={value}
       disabled={disabled}
       onValueChange={(next) => onChange(next as V[])}
-      className="flex flex-wrap gap-1.5"
+      className={
+        size === 'lg'
+          ? 'grid grid-cols-[repeat(auto-fit,minmax(11rem,1fr))] gap-2'
+          : 'flex flex-wrap gap-1.5'
+      }
     >
       {items.map((item) => (
         <Toggle
           key={item.value}
           value={item.value}
           title={item.title}
-          className="h-7 rounded-sm border whitespace-nowrap border-(--field-border) bg-surface-1 px-2 text-body-compact text-ink-subtle transition-colors hover:border-(--field-border-hover) hover:text-ink data-[disabled]:border-(--field-border-disabled) data-[disabled]:text-(--field-text-disabled) data-[pressed]:border-(--field-border-hover) data-[pressed]:bg-surface-3 data-[pressed]:text-ink"
+          className={cn(
+            'rounded-sm border whitespace-nowrap border-(--field-border) bg-surface-1 text-ink-muted transition-colors hover:border-(--field-border-hover) hover:text-ink data-[disabled]:border-(--field-border-disabled) data-[disabled]:text-(--field-text-disabled) data-[pressed]:border-primary data-[pressed]:bg-primary-subtle data-[pressed]:text-ink',
+            size === 'lg' ? 'h-11 px-4 text-body' : 'h-7 px-2 text-body-compact',
+          )}
         >
           {item.label}
         </Toggle>
@@ -452,8 +499,8 @@ export function Metric({
 const BADGE: Record<Tone | 'outline', string> = {
   neutral: 'bg-surface-3 text-ink-muted',
   muted: 'bg-surface-2 text-ink-subtle',
-  profit: 'text-pnl-positive',
-  loss: 'text-pnl-negative',
+  profit: 'text-pnl-positive-text',
+  loss: 'text-pnl-negative-text',
   warn: 'text-status-warning',
   outline: 'border border-hairline-strong text-ink-subtle',
 }
@@ -484,8 +531,8 @@ export function Badge({
 }
 
 const METRIC_BADGE = {
-  profit: 'bg-pnl-positive-tint text-pnl-positive border border-pnl-positive-edge',
-  loss: 'bg-pnl-negative-tint text-pnl-negative border border-pnl-negative-edge',
+  profit: 'bg-pnl-positive-tint text-pnl-positive-text border border-pnl-positive-edge',
+  loss: 'bg-pnl-negative-tint text-pnl-negative-text border border-pnl-negative-edge',
   neutral: 'bg-surface-2 text-ink border border-hairline',
 }
 
@@ -601,7 +648,7 @@ const NOTICE = {
   error: {
     border: 'border-pnl-negative-edge',
     icon: CircleAlertIcon,
-    color: 'text-pnl-negative',
+    color: 'text-pnl-negative-text',
   },
 }
 
@@ -684,9 +731,7 @@ export function Empty({
       <p role="status" className="text-body font-medium text-balance break-words text-ink">
         {title}
       </p>
-      {children && (
-        <div className="max-w-md text-body-compact text-pretty text-ink-subtle">{children}</div>
-      )}
+      {children && <div className="text-body-compact text-pretty text-ink-subtle">{children}</div>}
     </div>
   )
 }

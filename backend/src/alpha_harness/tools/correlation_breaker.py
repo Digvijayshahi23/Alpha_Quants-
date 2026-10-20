@@ -19,16 +19,16 @@ A re-shape adds operators and data fields. For a Power Pool Alpha that can cost 
 limits, so each recipe is counted the way Power Pool counts and says when it would cross them.
 """
 
-from __future__ import annotations
-
 import asyncio
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
-from ..brain.schemas import SimulationRequest, SimulationSettings
+from ..brain.schemas import FULL_MODE, SimulationRequest, SimulationSettings
 from ..catalog.queries import FieldFilter, Tuple4
 from ..labs.fastexpr import (
     GROUPING,
+    MAX_FIELDS,
+    MAX_OPERATORS,
     Node,
     ParseError,
     data_fields,
@@ -37,7 +37,6 @@ from ..labs.fastexpr import (
     render,
 )
 from ..labs.launch import OPERATORS_UNREAD, account_operators
-from ..labs.power_pool import MAX_FIELDS, MAX_OPERATORS
 from ..vault.yields import is_power_pool
 
 if TYPE_CHECKING:
@@ -430,9 +429,10 @@ def requests(
     """One simulation per recipe, every one at the source Alpha's own settings.
 
     The settings are copied whole and never edited: the whole point is to hold everything
-    the Alpha was judged on and vary only what it is exposed to.
+    the Alpha was judged on and vary only what it is exposed to. Always in Full mode, the
+    only one that runs the production-correlation check this tool is here to pass.
     """
-    held = SimulationSettings.model_validate(settings)
+    held = SimulationSettings.model_validate(settings | {"simulationMode": FULL_MODE})
     return [
         SimulationRequest(settings=held.model_copy(), regular=compressed.program(r.tail, r.setup))
         for r in recipes

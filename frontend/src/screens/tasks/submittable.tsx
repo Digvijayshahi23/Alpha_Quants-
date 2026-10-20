@@ -52,7 +52,7 @@ import { Confirm } from '@/ui/overlay'
 const UNIVERSES = ['ALL', 'TOP3000', 'TOP2000', 'TOP1000', 'TOP800', 'TOP600', 'TOP500', 'TOP400', 'TOP200']
 const NEUTRALIZATIONS = ['ALL', 'NONE', 'INDUSTRY', 'SUBINDUSTRY', 'SECTOR', 'MARKET', 'CROWDING']
 
-export function SubmittableAlphas() {
+export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: string) => void } = {}) {
   const queryClient = useQueryClient()
 
   // State: Filter Toolbar

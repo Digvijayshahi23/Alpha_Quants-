@@ -8,8 +8,6 @@ Neither simulates on its own: previews only read, and queueing hands work to the
 like any lab.
 """
 
-from __future__ import annotations
-
 import asyncio
 import json
 from typing import Any, Literal, Self
@@ -18,10 +16,11 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field, model_validator
 from sqlalchemy import delete, select
 
+from ..brain.schemas import REGION_AGNOSTIC_REGION
 from ..db.models import Submission, Trial, TrialState, utcnow
 from ..engine.packer import MAX_BATCH
 from ..engine.slots import DEFAULT_SLOTS
-from ..labs.launch import AddedTask, add_study
+from ..labs.launch import NO_NEUTRALIZATION, AddedTask, add_study
 from ..labs.params import CORRELATION_BREAKER, SETTINGS_SAMPLER, BreakerParams, SettingsParams
 from ..schemas import Out
 from ..tools import correlation_breaker, settings_sampler, submission_planner
@@ -46,6 +45,8 @@ class MarketRow(Out):
     coverage: float
     #: Simulations this market is worth: its neutralizations times its legal pairs.
     total: int
+    #: What the Truncation Agent sets here.
+    agent_truncation: float
 
 
 class RegionPlan(Out):
@@ -54,13 +55,16 @@ class RegionPlan(Out):
     universes: list[str]
     neutralizations: list[str]
     pairs: list[Pair]
-    #: Whether BRAIN accepts Max Position here, measured rather than assumed.
+    #: Whether BRAIN accepts Max Position here.
     position_available: bool
+    #: Simulations of the day's allowance one run here uses: 4 in All Regions, else 1.
+    cost: int
     markets: list[MarketRow]
     total: int
 
 
 class PlanTotals(Out):
+    #: Of the day's allowance, All Regions counted at its own cost.
     total: int
     batches: int
 
@@ -72,6 +76,7 @@ class SourceSettings(Out):
     neutralization: str | None
     decay: int | None
     truncation: float | None
+    pasteurization: str
     nan_handling: str
     test_period: str
     max_trade: str
@@ -102,6 +107,7 @@ class PreviewRequest(BaseModel):
     #: there is no Alpha.
     decay: int | None = Field(default=None, ge=0, le=512)
     truncation: float | None = Field(default=None, ge=0, le=1)
+    pasteurization: Literal["ON", "OFF"] | None = None
     nan_handling: Literal["ON", "OFF"] | None = Field(default=None, alias="nanHandling")
     #: ``P{years}Y{months}M0D``, the shape BRAIN's own field takes; its bounds are
     #: ``P0Y0M0D`` to ``P6Y0M0D``.
@@ -124,6 +130,7 @@ class PreviewRequest(BaseModel):
             expression=self.expression.strip() if self.expression else None,
             decay=self.decay,
             truncation=self.truncation,
+            pasteurization=self.pasteurization,
             nan_handling=self.nan_handling,
             test_period=self.test_period,
         )
@@ -150,7 +157,8 @@ class PairPick(BaseModel):
 
 
 class SampleRequest(PreviewRequest):
-    """What to queue. An empty list means "everything the plan offers"."""
+    """What to queue. An empty market or pair list means "everything the plan offers"; an
+    empty neutralization list is refused, since nobody chose what to run."""
 
     markets: list[MarketPick] = Field(default_factory=list, max_length=500)
     neutralizations: list[str] = Field(default_factory=list, max_length=50)
@@ -162,6 +170,8 @@ class SampleRequest(PreviewRequest):
     #: neither Max Trade nor Max Position. On by default: those simulations cost the same as
     #: any other and produce an Alpha carrying the market's own direction.
     market_neutral_only: bool = Field(default=True, alias="marketNeutralOnly")
+    #: Truncation set per market by the Truncation Agent rather than held at one value.
+    truncation_agent: bool = Field(default=False, alias="truncationAgent")
 
 
 @router.post("/settings-sampler/preview")
@@ -184,11 +194,20 @@ async def add_task(body: SampleRequest, state: State) -> AddedTask:
             "too_many_cores",
             f"The engine has {state.engine.slots} slots, so a task cannot hold {body.cores}.",
         )
+    if not body.neutralizations:
+        raise refuse(422, "no_neutralization", NO_NEUTRALIZATION)
     found = await body.plan(state)
     if found["problems"]:
         raise refuse(422, "settings_sampler_blocked", found["problems"][0])
 
-    chosen = {(m.region, m.delay, m.universe) for m in body.markets}
+    # Nothing chosen means every market, except All Regions: at four simulations a run it is
+    # only swept when asked for by name.
+    chosen = {(m.region, m.delay, m.universe) for m in body.markets} or {
+        (str(m["region"]), int(m["delay"]), str(m["universe"]))
+        for r in found["regions"]
+        if r["region"] != REGION_AGNOSTIC_REGION
+        for m in r["markets"]
+    }
     source: dict[str, Any] = {**found["settings"], "expression": found["expression"]}
     requests = settings_sampler.expand(
         found["regions"],
@@ -197,6 +216,7 @@ async def add_task(body: SampleRequest, state: State) -> AddedTask:
         {(p.max_trade, p.max_position) for p in body.pairs},
         source,
         market_neutral_only=body.market_neutral_only,
+        truncation_agent=body.truncation_agent,
     )
     if not requests:
         raise refuse(
@@ -206,7 +226,7 @@ async def add_task(body: SampleRequest, state: State) -> AddedTask:
             "Max Trade / Max Position pair.",
         )
 
-    markets = len(chosen) or sum(len(r["markets"]) for r in found["regions"])
+    markets = len(chosen)
     return await add_study(
         state,
         now=utcnow(),
@@ -218,6 +238,7 @@ async def add_task(body: SampleRequest, state: State) -> AddedTask:
             markets=markets,
             decay=int(found["settings"]["decay"] or 0),
             truncation=float(found["settings"]["truncation"] or 0.08),
+            truncation_agent=body.truncation_agent,
             nan_handling=str(found["settings"]["nanHandling"] or "ON"),
             test_period=str(found["settings"]["testPeriod"] or ""),
             cores=body.cores,
@@ -229,7 +250,7 @@ async def add_task(body: SampleRequest, state: State) -> AddedTask:
         batch_size=(body.cores + 1) * MAX_BATCH,
         template_source=found["expression"],
         template_name=f"Settings Sampler · {body.alpha_id or 'Expression'}",
-        seeds=settings_sampler.seed_trials(requests, has_source=bool(body.alpha_id)),
+        seeds=settings_sampler.seed_trials(requests),
     )
 
 
@@ -274,7 +295,9 @@ class PlannedPortfolio(Out):
 
 
 class PlanRequest(BaseModel):
-    task_ids: list[int] = Field(min_length=1, max_length=50, alias="taskIds")
+    # The screen plans over every task by default, and an account passes 50 within weeks. The
+    # ids only fill an IN list, so the bound is SQLite's 32,766 parameters, not the search.
+    task_ids: list[int] = Field(min_length=1, max_length=10_000, alias="taskIds")
 
     model_config = {"populate_by_name": True}
 
@@ -499,5 +522,5 @@ async def breaker_task(body: BreakerRequest, state: State) -> AddedTask:
         batch_size=(body.cores + 1) * MAX_BATCH,
         template_source=found["expression"],
         template_name=f"Correlation Breaker · {body.alpha_id}",
-        seeds=settings_sampler.seed_trials(requests, has_source=False),
+        seeds=settings_sampler.seed_trials(requests),
     )
