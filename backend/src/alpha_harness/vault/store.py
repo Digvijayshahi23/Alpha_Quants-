@@ -666,9 +666,15 @@ class AlphaVault:
         """Look several alphas up at once, keyed by id."""
         if not alpha_ids:
             return {}
-        placeholders = ", ".join("?" for _ in alpha_ids)
-        rows = await self.catalog.query(
-            f"SELECT * FROM alpha WHERE alpha_id IN ({placeholders})",  # noqa: S608
-            list(alpha_ids),
-        )
-        return {str(r["alpha_id"]): r for r in rows}
+        unique_ids = list(dict.fromkeys(alpha_ids))
+        out: dict[str, dict[str, Any]] = {}
+        # Batch in chunks to prevent DuckDB parameter limit bottlenecks
+        for chunk in itertools.batched(unique_ids, 500, strict=False):
+            placeholders = ", ".join("?" for _ in chunk)
+            rows = await self.catalog.query(
+                f"SELECT * FROM alpha WHERE alpha_id IN ({placeholders})",  # noqa: S608
+                list(chunk),
+            )
+            for r in rows:
+                out[str(r["alpha_id"])] = r
+        return out

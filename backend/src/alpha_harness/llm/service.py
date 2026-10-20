@@ -62,8 +62,28 @@ def _status(exc: Exception) -> int | None:
 def _is_rate_limit(exc: Exception) -> tuple[bool, bool]:
     """``(rate limited, daily)``. Only the provider's details say which limit was hit."""
     text = str(exc).lower()
-    limited = _status(exc) == 429 or "resource_exhausted" in text or "quota" in text
-    daily = "per day" in text or "perday" in text or "daily" in text or "requests per day" in text
+    status = _status(exc)
+    limited = (
+        status in (413, 429)
+        or "resource_exhausted" in text
+        or "quota" in text
+        or "rate_limit_exceeded" in text
+        or "rate limit" in text
+        or "tokens per minute" in text
+        or "tpm" in text
+        or "request too large" in text
+        or "too many requests" in text
+    )
+    daily = (
+        (
+            "per day" in text
+            or "perday" in text
+            or "daily" in text
+            or "requests per day" in text
+            or "rpd" in text
+        )
+        and "please try again in" not in text
+    )
     return limited, daily
 
 

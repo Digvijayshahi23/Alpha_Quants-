@@ -116,24 +116,6 @@ BUILTIN: tuple[ModelInfo, ...] = (
         rpd=500,
         bulk=True,
     ),
-    ModelInfo(
-        "gemma-4-31b-it",
-        "Gemma 4 31B",
-        "open",
-        rpm=30,
-        tpm=16_000,
-        rpd=14_400,
-        bulk=True,
-    ),
-    ModelInfo(
-        "gemma-4-26b-a4b-it",
-        "Gemma 4 26B",
-        "open",
-        rpm=30,
-        tpm=16_000,
-        rpd=14_400,
-        bulk=True,
-    ),
 )
 
 #: For a model discovered from the API with no published limits. The *most* restrictive real

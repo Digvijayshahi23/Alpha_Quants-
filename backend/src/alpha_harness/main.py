@@ -33,6 +33,7 @@ from .api import (
     ga,
     lab_tasks,
     llm,
+    planner,
     portfolio,
     power_pool_lab,
     quarter,
@@ -84,7 +85,7 @@ def configure_logging() -> None:
             structlog.processors.StackInfoRenderer(),
             structlog.dev.set_exc_info,
             structlog.processors.TimeStamper(fmt="%H:%M:%S", utc=False),
-            structlog.dev.ConsoleRenderer(colors=sys.stdout.isatty()),
+            structlog.dev.ConsoleRenderer(colors=True),
         ],
         wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
         logger_factory=structlog.PrintLoggerFactory(),
@@ -162,6 +163,7 @@ def create_app() -> FastAPI:
     app.include_router(chat.router)
     app.include_router(update.router)
     app.include_router(ws.router)
+    app.include_router(planner.router)
 
     @app.get("/api/health", tags=["meta"])
     async def health() -> Health:

@@ -91,6 +91,8 @@ class SimulationTracker:
         # record_id -> monotonic time of the next allowed poll. In memory only; losing
         # it just means we poll once immediately after a restart.
         self._next_poll: dict[int, float] = {}
+        # record_id -> consecutive failure count (for 5xx or repeated transport errors)
+        self._poll_failures: dict[int, int] = {}
         #: Adopted rows this process is sending right now. Their ``created_at`` is when
         #: they were queued, so without this the stale-send check could orphan one
         #: mid-request.
@@ -486,9 +488,40 @@ class SimulationTracker:
                 # A 403, 429 or 5xx is not a result: treating it as one would close a
                 # running simulation with no alpha and stop polling it.
                 log.warning("sim.poll_error", record_id=record.id, status=response.status)
+                self._poll_failures[record.id] = self._poll_failures.get(record.id, 0) + 1
+                age_seconds = (utcnow() - record.created_at).total_seconds()
+                if (response.status >= 500 and self._poll_failures[record.id] >= 10) or age_seconds > 7200:
+                    log.error(
+                        "sim.poll_abandoned",
+                        record_id=record.id,
+                        status=response.status,
+                        errors=self._poll_failures[record.id],
+                        age_seconds=age_seconds,
+                    )
+                    self._poll_failures.pop(record.id, None)
+                    return await self._apply_terminal(
+                        record,
+                        Outcome(
+                            "finished",
+                            SimStatus.ERROR,
+                            message=f"Simulation failed on BRAIN (status {response.status}, retries exhausted).",
+                        ),
+                    )
                 self._next_poll[record.id] = time.monotonic() + (outcome.delay or 15.0)
                 return False
             case "pending":
+                self._poll_failures.pop(record.id, None)
+                age_seconds = (utcnow() - record.created_at).total_seconds()
+                if age_seconds > 7200:
+                    log.error("sim.timed_out", record_id=record.id, age_seconds=age_seconds)
+                    return await self._apply_terminal(
+                        record,
+                        Outcome(
+                            "finished",
+                            SimStatus.TIMEOUT,
+                            message="Simulation timed out on BRAIN after >2 hours without completion.",
+                        ),
+                    )
                 self._next_poll[record.id] = time.monotonic() + (
                     outcome.delay or DEFAULT_POLL_SECONDS
                 )
@@ -502,8 +535,10 @@ class SimulationTracker:
                     )
                 return True
             case "fanout":
+                self._poll_failures.pop(record.id, None)
                 return await self._hand_over_children(record, outcome)
             case "gone" | "finished":
+                self._poll_failures.pop(record.id, None)
                 return await self._apply_terminal(record, outcome)
 
     async def _hand_over_children(self, record: SimulationRecord, outcome: Outcome) -> bool:

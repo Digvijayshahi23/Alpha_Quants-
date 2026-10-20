@@ -74,6 +74,11 @@ _calls: dict[int, asyncio.Task[None]] = {}
 _retry: dict[int, float] = {}
 
 
+def reset_retry(study_id: int) -> None:
+    """Clear any retry cooldown for this study so resumed tasks start immediately."""
+    _retry.pop(study_id, None)
+
+
 class Rejected(ValueError):
     """Why an expression is thrown away before it is simulated."""
 
@@ -207,13 +212,16 @@ def draw(
     ).model_dump(by_alias=True, exclude_none=True)
 
 
-def operators_text(operators: list[dict[str, Any]]) -> str:
+def operators_text(operators: list[dict[str, Any]], *, compact: bool = False) -> str:
     table = operator_table(operators)
     by: dict[str, list[str]] = {}
     for o in operators:
         name = o.get("name")
         if name in table:
-            line = f"{name}: {o.get('definition')} | {str(o.get('description') or '')[:160]}"
+            if compact:
+                line = f"{name}: {o.get('definition')}"
+            else:
+                line = f"{name}: {o.get('definition')} | {str(o.get('description') or '')[:160]}"
             by.setdefault(str(o.get("category") or "Other"), []).append(line)
     return "\n".join(f"## {c}\n" + "\n".join(lines) for c, lines in sorted(by.items()))
 
@@ -290,7 +298,7 @@ def memory_text(done: list[Any], waiting: list[Any], thrown: list[Any]) -> str:
 
 
 def budget_for(model: ModelInfo) -> int:
-    return min(40_000, int(model.tpm * 0.6))
+    return max(1_000, min(40_000, int(model.tpm * 0.55)))
 
 
 #: What a model cannot infer from the market line when the region is ALL. The warning about
@@ -315,11 +323,12 @@ def user_prompt(
     budget: int,
 ) -> tuple[str, int]:
     """The user turn, and how many field lines it shows."""
+    compact_ops = budget < 15_000
     head = "\n\n".join(
         [
             f"MARKET\n{run.region} · Delay {run.delay} · Universes {', '.join(run.universes)}"
             + (REGION_AGNOSTIC_BRIEF if run.region == REGION_AGNOSTIC_REGION else ""),
-            "OPERATORS\n" + operators_text(operators),
+            "OPERATORS\n" + operators_text(operators, compact=compact_ops),
             f"DATASET\n{ctx.id} · {ctx.name} · {ctx.category}\n{ctx.description}",
         ]
     )
@@ -332,14 +341,15 @@ def user_prompt(
             f"Write {PER_CALL} new Power Pool Alphas that use {ctx.id}.",
         ]
     )
-    room = budget * 4 - len(POWER_POOL_LAB) - len(head) - len(tail) - 200
+    room = budget * 4 - len(POWER_POOL_LAB) - len(head) - len(tail) - 500
     total = len(ctx.fields)
     start = offset % total if total else 0
     ordered = ctx.fields[start:] + ctx.fields[:start]
     lines: list[str] = []
-    for f in ordered[:FIELDS_PER_CALL]:
+    min_fields = min(total, 5) if total else 0
+    for i, f in enumerate(ordered[:FIELDS_PER_CALL]):
         line = _line(f)
-        if room - len(line) < 0:
+        if room - len(line) < 0 and i >= min_fields:
             break
         room -= len(line) + 1
         lines.append(line)
@@ -466,11 +476,33 @@ async def _write(optimizer: Optimizer, study_id: int) -> None:
                 await _note(optimizer, study_id, f"Waiting for LLM budget: {exc}")
             return None
         except LLMError as exc:
-            _retry[study_id] = time.monotonic() + 60.0
+            err_text = str(exc).lower()
             entry["error"] = str(exc)[:300]
+            is_transient = any(
+                w in err_text
+                for w in (
+                    "rate",
+                    "quota",
+                    "tpm",
+                    "too large",
+                    "413",
+                    "429",
+                    "503",
+                    "overload",
+                    "busy",
+                    "timed out",
+                    "temporarily",
+                )
+            )
+            if is_transient:
+                _retry[study_id] = time.monotonic() + 30.0
+                await _note(optimizer, study_id, f"Waiting for LLM: {str(exc)[:120]}")
+                return None
+
+            _retry[study_id] = time.monotonic() + 60.0
             llm["failed"] = int(llm.get("failed") or 0) + 1
-            if llm["failed"] >= 3:
-                await _pause(optimizer, study_id, f"The LLM failed 3 times in a row: {exc}")
+            if llm["failed"] >= 5:
+                await _pause(optimizer, study_id, f"The LLM failed 5 times in a row: {exc}")
                 return None
 
         table = operator_table(operators)

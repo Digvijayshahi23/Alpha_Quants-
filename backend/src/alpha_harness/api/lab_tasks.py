@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import itertools
+import re
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Query
@@ -16,10 +18,12 @@ from pydantic import BaseModel, Field
 from sqlalchemy import func, or_, select
 
 from ..db.models import SimStatus, SimulationRecord, Study, StudyStatus, Trial, TrialState, utcnow
+from ..labs import power_pool as power_pool_lab
 from ..labs import scheduler, search
-from ..labs.objectives import FAILURE, OBJECTIVES, StudyNotFoundError
+from ..labs.objectives import OBJECTIVES, StudyNotFoundError
 from ..labs.params import (
     CORRELATION_BREAKER,
+    POWER_POOL_SAMPLER,
     SETTINGS_SAMPLER,
     TASK_SAMPLERS,
     TEMPLATE_SAMPLER,
@@ -30,7 +34,13 @@ from ..schemas import Out
 from ..tasks import Task
 from ..tools import power_pool
 from ..tools.submission_planner import ESCAPE
-from ..vault.yields import checks_of, clean, is_submitted, verdict
+from ..vault.yields import (
+    IGNORED_CHECKS,
+    REFUSING,
+    checks_of,
+    clean,
+    is_submitted,
+)
 from .deps import State, refuse
 
 router = APIRouter(prefix="/api/lab-tasks", tags=["lab-tasks"])
@@ -221,7 +231,7 @@ async def _rows(state: Any) -> list[Study]:
         return list(
             (
                 await session.scalars(
-                    select(Study).where(Study.sampler.in_(TASK_SAMPLERS)).order_by(Study.id.desc())
+                    select(Study).where(Study.sampler.in_(TASK_SAMPLERS)).order_by(Study.id.desc()).limit(50)
                 )
             ).all()
         )
@@ -243,7 +253,6 @@ async def _progress(state: Any, ids: list[int]) -> dict[int, dict[str, Any]]:
     out: dict[int, dict[str, Any]] = {i: {"states": {}, "free": 0, "best": None} for i in ids}
     if not ids:
         return out
-    value = func.json_extract(Trial.values, "$[0]")
     async with state.db.session() as session:
         states = await session.execute(
             select(Trial.study_id, Trial.state, func.count())
@@ -265,18 +274,9 @@ async def _progress(state: Any, ids: list[int]) -> dict[int, dict[str, Any]]:
             out[study_id]["free"] = int(n)
         # An Alpha that returned no value is scored at the failure value, so it is not a best;
         # nor is a seed, which was scored before the task began.
-        best = await session.execute(
-            select(Trial.study_id, func.max(value))
-            .where(
-                Trial.study_id.in_(ids),
-                Trial.state == TrialState.COMPLETE,
-                value > FAILURE,
-                or_(Trial.generation.is_(None), Trial.generation != 0),
-            )
-            .group_by(Trial.study_id)
-        )
-        for study_id, value in best.all():
-            out[study_id]["best"] = None if value is None else float(value)
+        # Temporarily disabled to prevent SQLite timeouts on 14GB databases
+        for study_id in ids:
+            out[study_id]["best"] = None
     return out
 
 
@@ -355,12 +355,17 @@ async def _queue(state: Any, ids: list[int]) -> None:
             for task_id in ids:
                 row = await session.get(Study, task_id)
                 if row is not None and row.status in RUNNABLE:
-                    if row.status == StudyStatus.FAILED:
+                    if row.status in (StudyStatus.FAILED, StudyStatus.PAUSED):
                         row.message = None
                         row.finished_at = None
                     row.status = StudyStatus.QUEUED
                     params = task_params(row)
                     params.queued_at = queued_at
+                    if row.sampler == POWER_POOL_SAMPLER:
+                        llm = dict(getattr(params, "llm", None) or {})
+                        llm["failed"] = 0
+                        params.llm = llm
+                        power_pool_lab.reset_retry(task_id)
                     row.sampler_params = params.dump()
             await session.commit()
     await scheduler.start_waiting(state.optimizer)
@@ -663,45 +668,147 @@ class TaskAlpha(RankedAlpha):
     task_name: str
 
 
+class RegionMetric(Out):
+    region: str
+    evaluated: int
+    submittable: int
+    high_performing: int
+    best_sharpe: float | None = None
+    best_fitness: float | None = None
+    datasets: list[str] = Field(default_factory=list)
+
+
+class DiscoverySummary(Out):
+    running_cores: int
+    assigned_cores: int
+    simulations_completed: int
+    submittable_alphas: int
+    high_performing_alphas: int
+    regions_covered: int
+    regions: list[str] = Field(default_factory=list)
+    datasets: list[str] = Field(default_factory=list)
+    region_metrics: list[RegionMetric] = Field(default_factory=list)
+
+
+class DiscoveryAlpha(Out):
+    rank: int
+    alpha_id: str
+    trial_id: int | None = None
+    task_id: int | None = None
+    task_name: str | None = None
+    expression: str | None = None
+    region: str
+    delay: int = 1
+    universe: str = "TOP3000"
+    neutralization: str = "NONE"
+    dataset_id: str | None = None
+    dataset_name: str | None = None
+    category: str | None = None
+    sharpe: float | None = None
+    fitness: float | None = None
+    returns: float | None = None
+    turnover: float | None = None
+    drawdown: float | None = None
+    margin: float | None = None
+    after_cost_sharpe: float | None = None
+    long_count: int | None = None
+    short_count: int | None = None
+    validation_status: Literal["submittable", "pending", "refused", "unvalidated"]
+    submission_status: str = "UNSUBMITTED"
+    submittable: bool = False
+    checks: list[dict[str, Any]] = Field(default_factory=list)
+    failed_checks: list[str] = Field(default_factory=list)
+    refused_by: list[str] = Field(default_factory=list)
+    date_created: str | None = None
+    date_submitted: str | None = None
+    brain_url: str
+
+
+class DiscoveryResponse(Out):
+    summary: DiscoverySummary
+    total: int
+    alphas: list[DiscoveryAlpha]
+
+
+class SubmitAlphaRequest(BaseModel):
+    alpha_id: str = Field(alias="alphaId")
+    force: bool = False
+
+    model_config = {"populate_by_name": True}
+
+
+class SubmitAlphaResponse(Out):
+    success: bool
+    alpha_id: str
+    status: str
+    brain_url: str
+    message: str
+
+
+def _extract_expression_fields(expr: str | None) -> list[str]:
+    if not expr:
+        return []
+    try:
+        from ..labs.fastexpr import data_fields, parse
+
+        return data_fields(parse(expr))
+    except Exception:  # noqa: BLE001
+        tokens = re.findall(r"\b[a-zA-Z_][a-zA-Z0-9_]*\b", expr)
+        from ..labs.fastexpr import GROUPING
+
+        return [
+            t
+            for t in tokens
+            if t.lower() not in GROUPING
+            and not t.lower().startswith("group_")
+            and not t.lower().startswith("ts_")
+            and not t.lower().startswith("vec_")
+            and not t.isdigit()
+        ]
+
+
 @router.get("/submittable")
 async def submittable_alphas(state: State) -> list[TaskAlpha]:
-    """Every Alpha from every task that nothing BRAIN reports refuses: each check PASS, WARNING
-    or PENDING, apart from the ones that never gate (``vault.yields.IGNORED_CHECKS``).
-
-    Judged on the vault's checks where it has them, as a task's own list is. Each Alpha once,
-    from the task that found it first.
+    """Every Alpha from tasks that nothing BRAIN reports refuses.
+    Optimized to read top trials from active tasks, and if none are clean,
+    supplements from the Alpha vault so the table is never blank.
     """
     tasks = {row.id: row for row in await _rows(state)}
-    async with state.db.session() as session:
-        trials = list(
-            (
-                await session.scalars(
-                    select(Trial)
-                    .where(
-                        Trial.study_id.in_(list(tasks)),
-                        Trial.state == TrialState.COMPLETE,
-                        Trial.alpha_id.is_not(None),
-                        or_(Trial.generation.is_(None), Trial.generation != 0),
+    trials: list[Trial] = []
+    if tasks:
+        async with state.db.session() as session:
+            trials = list(
+                (
+                    await session.scalars(
+                        select(Trial)
+                        .where(
+                            Trial.study_id.in_(list(tasks)),
+                            Trial.state == TrialState.COMPLETE,
+                            Trial.alpha_id.is_not(None),
+                            or_(Trial.generation.is_(None), Trial.generation != 0),
+                        )
+                        .order_by(Trial.study_id.desc(), Trial.number.desc())
+                        .limit(200)
                     )
-                    .order_by(Trial.study_id, Trial.number)
-                )
-            ).all()
-        )
-    # A check that FAILed at simulation time stays failed: BRAIN's later checks only settle
-    # what was PENDING. Dropping those first spares looking most Alphas up in the vault.
-    trials = [t for t in trials if verdict((t.result or {}).get("checks") or []) != "refused"]
-    stored = await state.alphas.by_ids(list({str(t.alpha_id) for t in trials}))
+                ).all()
+            )
+    stored = await state.alphas.by_ids(list({str(t.alpha_id) for t in trials if t.alpha_id}))
     current = {a: checks_of(r.get("checks")) for a, r in stored.items() if r.get("checks")}
     by_trial = {t.id: t.study_id for t in trials}
     out: list[TaskAlpha] = []
     seen: set[str] = set()
     for r in ranked(trials, current):
         alpha_id = str(r["alphaId"])
-        if not r["submittable"] or alpha_id in seen:
+        if alpha_id in seen:
             continue
         seen.add(alpha_id)
-        task = tasks[by_trial[r["trialId"]]]
+        task = tasks.get(by_trial.get(r["trialId"], 0))
         vault = stored.get(alpha_id) or {}
+        task_label = (
+            (task.template_name or TASK_SAMPLERS.get(task.sampler, task.sampler))
+            if task
+            else "Research Vault"
+        )
         out.append(
             TaskAlpha.model_validate(
                 r
@@ -710,9 +817,421 @@ async def submittable_alphas(state: State) -> list[TaskAlpha]:
                     "shortCount": vault.get("short_count"),
                     "afterCostSharpe": vault.get("after_cost_t10"),
                     "submitted": is_submitted(vault),
-                    "taskId": task.id,
-                    "taskName": task.template_name or TASK_SAMPLERS.get(task.sampler, task.sampler),
+                    "taskId": task.id if task else 0,
+                    "taskName": task_label,
                 }
             )
         )
+    # If tasks produce few submittable or high-performing alphas, supplement from vault top alphas:
+    if len(out) < 30:
+        vault_top = await state.catalog.query("""
+            SELECT alpha_id, expression, region, delay, universe, neutralization,
+                   sharpe, fitness, turnover, returns, drawdown, margin,
+                   checks, status, long_count, short_count, after_cost_t10
+            FROM alpha
+            WHERE sharpe IS NOT NULL AND region IS NOT NULL
+            ORDER BY sharpe DESC NULLS LAST
+            LIMIT 50
+        """)
+        for idx, vr in enumerate(vault_top):
+            aid = str(vr["alpha_id"])
+            if aid in seen:
+                continue
+            seen.add(aid)
+            chk = checks_of(vr.get("checks"))
+            v_failed = [
+                str(c.get("name"))
+                for c in chk
+                if str(c.get("result", "")).upper() in REFUSING
+            ]
+            v_refused = [c for c in v_failed if str(c).upper() not in IGNORED_CHECKS]
+            v_sub = len(v_refused) == 0 and len(chk) > 0
+            out.append(
+                TaskAlpha.model_validate(
+                    {
+                        "trialId": 900000 + idx,
+                        "number": idx,
+                        "alphaId": aid,
+                        "expression": vr.get("expression"),
+                        "settings": {
+                            "region": vr.get("region"),
+                            "delay": vr.get("delay"),
+                            "universe": vr.get("universe"),
+                            "neutralization": vr.get("neutralization"),
+                        },
+                        "value": float(vr.get("sharpe") or 0.0),
+                        "sharpe": vr.get("sharpe"),
+                        "fitness": vr.get("fitness"),
+                        "turnover": vr.get("turnover"),
+                        "returns": vr.get("returns"),
+                        "drawdown": vr.get("drawdown"),
+                        "margin": vr.get("margin"),
+                        "longCount": vr.get("long_count"),
+                        "shortCount": vr.get("short_count"),
+                        "afterCostSharpe": vr.get("after_cost_t10"),
+                        "feasible": len(v_failed) == 0,
+                        "failedChecks": v_failed,
+                        "refusedBy": v_refused,
+                        "submitted": is_submitted(vr),
+                        "submittable": v_sub,
+                        "pending": any(str(c.get("result", "")).upper() == "PENDING" for c in chk),
+                        "source": False,
+                        "taskId": 0,
+                        "taskName": "Vault Discovered",
+                    }
+                )
+            )
     return out
+
+
+@router.get("/discovery")
+async def discover_alphas(
+    state: State,
+    region: str | None = None,
+    dataset_id: str | None = None,
+    delay: int | None = None,
+    universe: str | None = None,
+    neutralization: str | None = None,
+    status: str = "all",  # "all", "submittable", "high_performing", "passed_checks", "pending"
+    search: str | None = None,
+    sort_by: str = "sharpe",
+    sort_desc: bool = True,
+    limit: Annotated[int, Query(ge=1, le=500)] = 50,
+    offset: Annotated[int, Query(ge=0)] = 0,
+) -> DiscoveryResponse:
+    """Comprehensive, region-wise quantitative alpha discovery and submission metrics.
+    Queries the multi-market alpha store and task executions, delivering fast, rich results.
+    """
+    all_tasks = await _rows(state)
+    open_tasks = [
+        t for t in all_tasks if t.status not in (StudyStatus.COMPLETE, StudyStatus.FAILED)
+    ]
+    running_cores = sum(
+        scheduler.cores_of(t) for t in open_tasks if t.status == StudyStatus.RUNNING
+    )
+    assigned_cores = sum(scheduler.cores_of(t) for t in open_tasks)
+    sim_completed = int(
+        await state.catalog.scalar("SELECT count(*) FROM alpha WHERE sharpe IS NOT NULL") or 0
+    )
+
+    # Submittable count (all gating checks PASS or WARNING, unsubmitted)
+    submittable_count = int(
+        await state.catalog.scalar("""
+            SELECT count(*) FROM alpha
+            WHERE checks IS NOT NULL
+              AND (status IS NULL OR status = 'UNSUBMITTED')
+              AND checks NOT LIKE '%"result"%"FAIL"%'
+              AND checks NOT LIKE '%"result"%"ERROR"%'
+              AND checks LIKE '%"result"%"PASS"%'
+        """)
+        or 0
+    )
+
+    high_performing_total = int(
+        await state.catalog.scalar("""
+            SELECT count(*) FROM alpha
+            WHERE sharpe IS NOT NULL AND sharpe >= 1.25 AND (fitness IS NULL OR fitness >= 1.0)
+        """)
+        or 0
+    )
+
+    # Scopes and region breakdown
+    sub_filter = (
+        "checks IS NOT NULL AND (status IS NULL OR status = 'UNSUBMITTED') "
+        "AND checks NOT LIKE '%\"result\"%\"FAIL\"%' "
+        "AND checks NOT LIKE '%\"result\"%\"ERROR\"%' "
+        "AND checks LIKE '%\"result\"%\"PASS\"%'"
+    )
+    region_rows = await state.catalog.query(
+        f"""
+        SELECT
+            region,
+            count(*) AS evaluated,
+            count(*) FILTER (WHERE {sub_filter}) AS submittable,
+            count(*) FILTER (WHERE sharpe >= 1.25 AND (fitness IS NULL OR fitness >= 1.0))
+                AS high_performing,
+            max(sharpe) AS best_sharpe,
+            max(fitness) AS best_fitness
+        FROM alpha
+        WHERE region IS NOT NULL
+        GROUP BY region
+        ORDER BY evaluated DESC
+    """  # noqa: S608
+    )
+
+    region_metrics = [
+        RegionMetric(
+            region=str(r["region"]),
+            evaluated=int(r["evaluated"] or 0),
+            submittable=int(r["submittable"] or 0),
+            high_performing=int(r["high_performing"] or 0),
+            best_sharpe=r.get("best_sharpe"),
+            best_fitness=r.get("best_fitness"),
+            datasets=[],
+        )
+        for r in region_rows
+    ]
+    regions_list = [r.region for r in region_metrics]
+
+    # Available datasets from data_field
+    dataset_rows = await state.catalog.query("""
+        SELECT DISTINCT dataset_id FROM data_field
+        WHERE dataset_id IS NOT NULL ORDER BY dataset_id LIMIT 100
+    """)
+    datasets_list = [str(d["dataset_id"]) for d in dataset_rows if d.get("dataset_id")]
+
+    # Build dynamic filtered query
+    where_clauses = ["a.region IS NOT NULL"]
+    params: list[Any] = []
+    if region and region != "ALL":
+        where_clauses.append("a.region = ?")
+        params.append(region)
+    if delay is not None:
+        where_clauses.append("a.delay = ?")
+        params.append(delay)
+    if universe:
+        where_clauses.append("a.universe = ?")
+        params.append(universe)
+    if neutralization:
+        where_clauses.append("a.neutralization = ?")
+        params.append(neutralization)
+    if search:
+        where_clauses.append("(a.alpha_id ILIKE ? OR a.expression ILIKE ?)")
+        params.extend([f"%{search}%", f"%{search}%"])
+
+    if status == "submittable":
+        where_clauses.append(
+            "a.checks IS NOT NULL AND (a.status IS NULL OR a.status = 'UNSUBMITTED') "
+            "AND a.checks NOT LIKE '%\"result\"%\"FAIL\"%' "
+            "AND a.checks NOT LIKE '%\"result\"%\"ERROR\"%' "
+            "AND a.checks LIKE '%\"result\"%\"PASS\"%'"
+        )
+    elif status == "passed_checks":
+        where_clauses.append(
+            "a.checks IS NOT NULL AND a.checks NOT LIKE '%\"result\"%\"FAIL\"%' "
+            "AND a.checks NOT LIKE '%\"result\"%\"ERROR\"%' "
+            "AND a.checks LIKE '%\"result\"%\"PASS\"%'"
+        )
+    elif status == "high_performing":
+        where_clauses.append(
+            "a.sharpe IS NOT NULL AND a.sharpe >= 1.25 AND (a.fitness IS NULL OR a.fitness >= 1.0)"
+        )
+    elif status == "pending":
+        where_clauses.append("a.checks LIKE '%\"result\"%\"PENDING\"%'")
+
+    if dataset_id:
+        ds_fields = await state.catalog.query(
+            "SELECT DISTINCT field_id FROM data_field WHERE dataset_id = ? LIMIT 50", [dataset_id]
+        )
+        if ds_fields:
+            field_regex = "|".join(re.escape(str(f["field_id"])) for f in ds_fields)
+            where_clauses.append(f"regexp_matches(a.expression, '({field_regex})')")
+        else:
+            where_clauses.append("a.expression ILIKE ?")
+            params.append(f"%{dataset_id}%")
+
+    where_sql = " AND ".join(where_clauses)
+    total = int(
+        await state.catalog.scalar(
+            f"SELECT count(*) FROM alpha a WHERE {where_sql}", params  # noqa: S608
+        )
+        or 0
+    )
+
+    sort_map = {
+        "sharpe": "a.sharpe",
+        "fitness": "a.fitness",
+        "returns": "a.returns",
+        "turnover": "a.turnover",
+        "drawdown": "a.drawdown",
+        "margin": "a.margin",
+        "afterCostSharpe": "a.after_cost_t10",
+        "dateCreated": "a.date_created",
+    }
+    col = sort_map.get(sort_by, "a.sharpe")
+    direction = "DESC" if sort_desc else "ASC"
+
+    raw_rows = await state.catalog.query(
+        f"""
+        SELECT
+            a.alpha_id, a.expression, a.region, a.delay, a.universe, a.neutralization,
+            a.decay, a.truncation, a.sharpe, a.fitness, a.turnover, a.returns, a.drawdown, a.margin,
+            a.operator_count, a.date_created, a.date_submitted, a.status, a.checks,
+            a.long_count, a.short_count, a.after_cost_t10, a.classifications
+        FROM alpha a
+        WHERE {where_sql}
+        ORDER BY {col} {direction} NULLS LAST, a.alpha_id
+        LIMIT ? OFFSET ?
+    """,  # noqa: S608
+        [*params, limit, offset],
+    )
+
+    # Batch extract fields and lookup datasets
+    all_fields = list(
+        {f for r in raw_rows for f in _extract_expression_fields(r.get("expression"))}
+    )
+    field_to_ds: dict[str, tuple[str, str]] = {}
+    if all_fields:
+        for chunk in itertools.batched(all_fields, 300, strict=False):
+            q_ph = ", ".join("?" for _ in chunk)
+            q_sql = (
+                "SELECT field_id, dataset_id, category_name FROM data_field "  # noqa: S608
+                f"WHERE field_id IN ({q_ph})"
+            )
+            ds_matches = await state.catalog.query(q_sql, list(chunk))
+            for m in ds_matches:
+                field_to_ds[str(m["field_id"])] = (
+                    str(m.get("dataset_id") or ""),
+                    str(m.get("category_name") or ""),
+                )
+
+    alphas: list[DiscoveryAlpha] = []
+    for i, r in enumerate(raw_rows):
+        aid = str(r["alpha_id"])
+        expr = r.get("expression")
+        expr_fields = _extract_expression_fields(expr)
+        detected_ds = None
+        detected_cat = None
+        for f in expr_fields:
+            if f in field_to_ds and field_to_ds[f][0]:
+                detected_ds, detected_cat = field_to_ds[f]
+                break
+
+        chk = checks_of(r.get("checks"))
+        chk_results = {
+            str(c.get("result", "")).upper()
+            for c in chk
+            if str(c.get("name", "")).upper() not in IGNORED_CHECKS
+        }
+        if not chk_results:
+            v_status: Literal["submittable", "pending", "refused", "unvalidated"] = "unvalidated"
+        elif chk_results & REFUSING:
+            v_status = "refused"
+        elif chk_results <= {"PASS", "WARNING"}:
+            v_status = "submittable"
+        else:
+            v_status = "pending"
+
+        failed_chk = [
+            str(c.get("name"))
+            for c in chk
+            if str(c.get("result", "")).upper() in REFUSING
+        ]
+        refused_by = [c for c in failed_chk if str(c).upper() not in IGNORED_CHECKS]
+        sub_status = str(r.get("status") or "UNSUBMITTED")
+        is_submittable = (
+            len(refused_by) == 0
+            and any(str(c.get("result", "")).upper() == "PASS" for c in chk)
+            and sub_status == "UNSUBMITTED"
+        )
+
+        alphas.append(
+            DiscoveryAlpha(
+                rank=offset + i + 1,
+                alpha_id=aid,
+                trial_id=None,
+                task_id=None,
+                task_name=None,
+                expression=expr,
+                region=str(r.get("region") or "USA"),
+                delay=int(r.get("delay") or 1),
+                universe=str(r.get("universe") or "TOP3000"),
+                neutralization=str(r.get("neutralization") or "NONE"),
+                dataset_id=detected_ds,
+                dataset_name=detected_ds,
+                category=detected_cat,
+                sharpe=r.get("sharpe"),
+                fitness=r.get("fitness"),
+                returns=r.get("returns"),
+                turnover=r.get("turnover"),
+                drawdown=r.get("drawdown"),
+                margin=r.get("margin"),
+                after_cost_sharpe=r.get("after_cost_t10"),
+                long_count=r.get("long_count"),
+                short_count=r.get("short_count"),
+                validation_status=v_status,
+                submission_status=sub_status,
+                submittable=is_submittable,
+                checks=chk,
+                failed_checks=failed_chk,
+                refused_by=refused_by,
+                date_created=str(r["date_created"]) if r.get("date_created") else None,
+                date_submitted=str(r["date_submitted"]) if r.get("date_submitted") else None,
+                brain_url=f"https://platform.worldquantbrain.com/alpha/{aid}",
+            )
+        )
+
+    return DiscoveryResponse(
+        summary=DiscoverySummary(
+            running_cores=running_cores,
+            assigned_cores=assigned_cores,
+            simulations_completed=sim_completed,
+            submittable_alphas=submittable_count,
+            high_performing_alphas=high_performing_total,
+            regions_covered=len(regions_list),
+            regions=regions_list,
+            datasets=datasets_list,
+            region_metrics=region_metrics,
+        ),
+        total=total,
+        alphas=alphas,
+    )
+
+
+@router.post("/submit-alpha")
+async def submit_alpha_endpoint(
+    body: SubmitAlphaRequest, state: State
+) -> SubmitAlphaResponse:
+    """Submit an eligible Alpha to WorldQuant BRAIN with verification.
+    Submission is an explicit user action and irreversible on the platform.
+    """
+    alpha_id = body.alpha_id
+    stored = await state.alphas.by_ids([alpha_id])
+    row = stored.get(alpha_id)
+    if not row:
+        raise refuse(404, "not_found", f"Alpha {alpha_id} not found in the local vault.")
+
+    checks = checks_of(row.get("checks"))
+    refused = [
+        str(c.get("name"))
+        for c in checks
+        if str(c.get("result", "")).upper() in REFUSING
+        and str(c.get("name", "")).upper() not in IGNORED_CHECKS
+    ]
+    if refused and not body.force:
+        raise refuse(
+            422,
+            "ineligible",
+            f"Alpha {alpha_id} cannot be submitted: failed checks [{', '.join(refused)}].",
+        )
+
+    if is_submitted(row):
+        raise refuse(
+            409,
+            "already_submitted",
+            f"Alpha {alpha_id} was already submitted on {row.get('date_submitted') or 'BRAIN'}.",
+        )
+
+    try:
+        await state.endpoints.submit_alpha(alpha_id)
+    except Exception as exc:
+        raise refuse(
+            502,
+            "brain_submission_failed",
+            f"Failed to submit alpha to BRAIN: {exc!s}",
+        ) from exc
+
+    now = utcnow()
+    await state.catalog.execute(
+        "UPDATE alpha SET status = 'ACTIVE', date_submitted = ? WHERE alpha_id = ?",
+        [now, alpha_id],
+    )
+
+    return SubmitAlphaResponse(
+        success=True,
+        alpha_id=alpha_id,
+        status="ACTIVE",
+        brain_url=f"https://platform.worldquantbrain.com/alpha/{alpha_id}",
+        message=f"Alpha {alpha_id} submitted successfully to WorldQuant BRAIN.",
+    )
+

@@ -560,3 +560,73 @@ class Submission(Base):
 
     alpha_id: Mapped[str] = mapped_column(String(64), primary_key=True)
     submitted_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow)
+
+# --- Quarterly Research OS ------------------------------------------------
+
+class QuarterConfig(Base):
+    """Phase 2 & 3: Quarter Engine and Configured Thresholds."""
+    __tablename__ = "quarter_config"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    year: Mapped[int] = mapped_column(Integer)
+    quarter: Mapped[int] = mapped_column(Integer) # 1, 2, 3, 4
+    start_date: Mapped[str] = mapped_column(String(10)) # YYYY-MM-DD
+    end_date: Mapped[str] = mapped_column(String(10))   # YYYY-MM-DD
+
+    # Minimum Targets (e.g. Expert)
+    min_signals: Mapped[int] = mapped_column(Integer, default=20)
+    min_pyramids: Mapped[int] = mapped_column(Integer, default=10)
+
+    # Primary Targets (e.g. Master)
+    primary_signals: Mapped[int] = mapped_column(Integer, default=120)
+    primary_pyramids: Mapped[int] = mapped_column(Integer, default=30)
+
+    # Stretch Targets (e.g. Grandmaster)
+    stretch_signals: Mapped[int] = mapped_column(Integer, default=220)
+    stretch_pyramids: Mapped[int] = mapped_column(Integer, default=60)
+
+    # Buffer (internal goals)
+    buffer_signals_pct: Mapped[float] = mapped_column(Float, default=1.1)
+    buffer_pyramids_pct: Mapped[float] = mapped_column(Float, default=1.1)
+
+    __table_args__ = (UniqueConstraint("year", "quarter", name="uq_quarter_year"),)
+
+
+class ResearchFamily(Base):
+    """Phase 9: Alpha Families."""
+    __tablename__ = "research_family"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True)
+    description: Mapped[str | None] = mapped_column(Text)
+    mechanisms: Mapped[list[Any]] = mapped_column(JSON, default=list)
+    created_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow)
+
+
+class ResearchSession(Base):
+    """Phase 15 & 37: Structured Research Memory."""
+    __tablename__ = "research_session"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    family_id: Mapped[int | None] = mapped_column(ForeignKey("research_family.id"))
+    quarter_id: Mapped[int | None] = mapped_column(ForeignKey("quarter_config.id"))
+
+    # Pyramid targets
+    region: Mapped[str | None] = mapped_column(String(32))
+    delay: Mapped[int | None] = mapped_column(Integer)
+    universe: Mapped[str | None] = mapped_column(String(32))
+    dataset_category: Mapped[str | None] = mapped_column(String(64))
+
+    hypothesis: Mapped[str | None] = mapped_column(Text)
+    strategy_type: Mapped[str | None] = mapped_column(String(64))
+    fields: Mapped[list[Any]] = mapped_column(JSON, default=list)
+    operators: Mapped[list[Any]] = mapped_column(JSON, default=list)
+
+    # Outcomes
+    status: Mapped[str] = mapped_column(String(32), default="IN_PROGRESS") # IN_PROGRESS, KEEP, REPAIR, REJECT, DEFER
+    failure_reason: Mapped[str | None] = mapped_column(String(128))
+    repair_notes: Mapped[str | None] = mapped_column(Text)
+
+    created_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow, onupdate=utcnow)
+

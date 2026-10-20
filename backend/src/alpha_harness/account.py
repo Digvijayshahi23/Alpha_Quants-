@@ -145,20 +145,21 @@ class AuthService:
                 raise NoCredentialError("Enter both your BRAIN email and password.")
 
             self._user_profile = None
-            # A pending verification is finished on its own inquiry, never by a new sign-in.
             pending = self._session.inquiry
-            info = await self.auth.verify(pending) if pending else None
+            info = None
+            if pending:
+                verified = await self.auth.verify(pending)
+                if verified and verified.authenticated:
+                    info = verified
             if info is None:
                 info = await self.auth.login(email, password)
             self._session = info
-            if info.authenticated:
-                # Stored only once BRAIN accepts it: a mistyped password must not become the
-                # credential that silent re-login keeps retrying.
+            if info.authenticated or info.inquiry:
+                # Stored once BRAIN accepts the password (authenticated or pending verification).
                 if supplied:
                     await self.store_credential(email, password)
-                # Touched first: _save_cookies files the jar under the most recent sign-in,
-                # so a new email's cookies would otherwise land on the previous account's row.
                 await self._touch_last_login(email)
+            if info.authenticated:
                 await self._save_cookies()
                 # Warm the profile so the first screen can greet them by name without a
                 # second round trip. Failure is swallowed inside; a missing name is cosmetic.
@@ -181,8 +182,16 @@ class AuthService:
         async with self._lock:
             info = await self.auth.verify(inquiry)
             if info is None:
-                # BRAIN would not take the inquiry at all. The session keeps what it had, so
-                # the screen still shows the check rather than a bare failure.
+                # The inquiry was rejected or expired on BRAIN (e.g. 410 Gone).
+                # Clear the dead inquiry so neither background pollers nor the frontend
+                # loop forever on an expired check.
+                self._session = SessionInfo(
+                    authenticated=False,
+                    detail=(
+                        "The verification session has expired. "
+                        "Please sign in again to request a new link."
+                    ),
+                )
                 return self._session
             self._user_profile = None
             self._session = info

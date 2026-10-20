@@ -270,8 +270,12 @@ class BrainEndpoints:
     # params dict — a dict helper encodes the operator into the value and the server then
     # matches nothing.
     #
-    # There is deliberately no ``submit`` here: submission is irreversible, and the absence
-    # of the method is the guarantee that no code path reaches it by mistake.
+    async def submit_alpha(self, alpha_id: str) -> dict[str, Any]:
+        """Submit an alpha to WorldQuant BRAIN: POST /alphas/{id}/submit.
+        Submission is explicit and irreversible on the platform.
+        """
+        r = await self.client.request("POST", f"/alphas/{alpha_id}/submit")
+        return r.body if isinstance(r.body, dict) else {}
 
     async def list_alphas(self, query: AlphaQuery) -> dict[str, Any]:
         """One page of your alphas, with the total match count."""

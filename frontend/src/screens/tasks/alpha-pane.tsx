@@ -148,7 +148,7 @@ export function AlphaPane({
     () => clean.filter((r) => passesPool(pool.by.get(r.alphaId))),
     [clean, pool.by],
   )
-  const shown = showAll ? rows : survivors
+  const shown = showAll ? rows : clean
   const sorted = useMemo(
     () => [...shown].sort((a, b) => comparePool(a, b, sort, pool.by, compare)),
     [shown, sort, pool.by, compare],

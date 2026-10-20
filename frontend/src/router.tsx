@@ -29,10 +29,37 @@ const dashboard = createRoute({
   component: lazyRouteComponent(() => import('@/screens/dashboard'), 'DashboardScreen'),
 })
 
+const quarter = createRoute({
+  getParentRoute: () => root,
+  path: '/quarter',
+  component: lazyRouteComponent(() => import('@/screens/quarter'), 'QuarterScreen'),
+})
+
 const matrix = createRoute({
   getParentRoute: () => root,
   path: '/matrix',
   component: lazyRouteComponent(() => import('@/screens/matrix'), 'MatrixScreen'),
+})
+
+const pyramidMatrix = createRoute({
+  getParentRoute: () => root,
+  path: '/pyramid-matrix',
+  component: lazyRouteComponent(() => import('@/screens/pyramid-matrix'), 'PyramidMatrixScreen'),
+})
+
+const researchSessions = createRoute({
+  getParentRoute: () => root,
+  path: '/research-sessions',
+  component: lazyRouteComponent(
+    () => import('@/screens/research-sessions'),
+    'ResearchSessionsScreen',
+  ),
+})
+
+const pyramidTargets = createRoute({
+  getParentRoute: () => root,
+  path: '/pyramid-targets',
+  component: lazyRouteComponent(() => import('@/screens/pyramid-targets'), 'PyramidTargetsScreen'),
 })
 
 const data = createRoute({
@@ -186,7 +213,11 @@ const pyramids = createRoute({
 const routeTree = root.addChildren([
   index,
   dashboard,
+  quarter,
+  researchSessions,
   matrix,
+  pyramidMatrix,
+  pyramidTargets,
   data,
   labs.addChildren([labsIndex, searchLab, templateLab, evolutionLab, powerPoolLab]),
   tools.addChildren([toolsIndex, settingsSampler, submissionPlanner, correlationBreaker]),

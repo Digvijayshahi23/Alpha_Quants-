@@ -17,7 +17,7 @@ import contextlib
 import dataclasses
 import itertools
 import time
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from typing import TYPE_CHECKING, Any
 
 import structlog
@@ -31,7 +31,7 @@ from ..brain.errors import (
     BrainForbidden,
     BrainValidationError,
 )
-from ..brain.filters import platform_midnight
+from ..brain.filters import PLATFORM_TZ, platform_midnight
 from ..brain.schemas import SimulationRequest
 from ..db.models import ACTIVE, DedupEntry, SimStatus, SimulationRecord, Study, TaskQuota, utcnow
 from ..tasks import spawn
@@ -125,8 +125,10 @@ class BatchEngine:
         #: Set when the daily cap is hit. Nothing is submitted until it clears, because
         #: retrying before the US-Eastern reset cannot succeed.
         self._daily_limit_hit = False
-        #: Monotonic time of BRAIN's quota reset; the flag clears once it passes.
-        self._limit_resets_at: float | None = None
+        #: Wall-clock UTC time of BRAIN's quota reset; the flag clears once it passes.
+        self._limit_resets_at: datetime | None = None
+        #: Platform calendar date when the limit was hit.
+        self._limit_hit_date: date | None = None
         self._enqueue_lock = asyncio.Lock()
         #: Reads finished batches back beside the scheduling round; at most one at a time.
         self._expansion: asyncio.Task[None] | None = None
@@ -475,11 +477,19 @@ class BatchEngine:
         return submitted
 
     async def _fill_slots(self) -> int:
-        reset = self._limit_resets_at
-        if self._daily_limit_hit and reset is not None and time.monotonic() >= reset:
-            # BRAIN's day has turned: the quota is back.
-            self._daily_limit_hit = False
-            self._limit_resets_at = None
+        if self._daily_limit_hit:
+            now = datetime.now(UTC)
+            reset = self._limit_resets_at
+            current_date = datetime.now(PLATFORM_TZ).date()
+            if (reset is not None and now >= reset) or (
+                self._limit_hit_date is not None and current_date > self._limit_hit_date
+            ):
+                # BRAIN's day has turned: the quota is back.
+                self._daily_limit_hit = False
+                self._limit_resets_at = None
+                self._limit_hit_date = None
+                log.info("engine.daily_limit_cleared")
+                await self.tracker.notify()
         if self._daily_limit_hit:
             return 0
         if self._session_lost:
@@ -851,7 +861,9 @@ class BatchEngine:
 
     async def _on_daily_limit(self) -> None:
         self._daily_limit_hit = True
-        self._limit_resets_at = time.monotonic() + await self._seconds_to_reset()
+        self._limit_hit_date = datetime.now(PLATFORM_TZ).date()
+        seconds = await self._seconds_to_reset()
+        self._limit_resets_at = datetime.now(UTC) + timedelta(seconds=seconds)
         log.warning("engine.daily_limit_reached")
         await self.tracker.notify()
 

@@ -194,13 +194,24 @@ type Act = { action: 'runAll' } | { action: 'run' | 'pause' | 'stop' | 'remove';
 export function TasksScreen() {
   const queryClient = useQueryClient()
   const list = useQuery({ queryKey: ['lab-tasks'], queryFn: labTasks.list })
+  const discovery = useQuery({
+    queryKey: ['lab-tasks', 'discovery-summary'],
+    queryFn: () => labTasks.discovery({ limit: 1 }),
+  })
   useRefetchOn('studies', ['lab-tasks'], 2_000)
   useRefetchOn('simulations', ['lab-tasks'], 5_000)
+  useRefetchOn('simulations', ['lab-tasks', 'discovery-summary'], 10_000)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [editing, setEditing] = useState<LabTask | null>(null)
   const [confirming, setConfirming] = useState<Act | null>(null)
   const [alphaId, setAlphaId] = useState<string | null>(null)
-  const [view, setView] = useState<'tasks' | 'submittable'>('tasks')
+  const [view, setView] = useState<'tasks' | 'submittable'>(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('view')
+      if (p === 'submittable') return 'submittable'
+    }
+    return 'tasks'
+  })
 
   // Nothing picked yet: open on what is running, then stay there. Re-deriving this every render
   // would move the pane out from under the reader the moment that task finished.
@@ -359,7 +370,7 @@ export function TasksScreen() {
           </Button>
         }
       />
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <Metric
           boxed
           label="Running Cores"
@@ -374,13 +385,35 @@ export function TasksScreen() {
         />
         <Metric
           boxed
-          label="Simulations Assigned"
-          value={list.isPending ? DASH : fmt.int(total(open, (t) => t.target))}
+          label="Simulations Completed"
+          value={
+            discovery.isPending && list.isPending
+              ? DASH
+              : fmt.int(discovery.data?.summary.simulationsCompleted ?? total(open, (t) => t.simulated))
+          }
         />
         <Metric
           boxed
-          label="Simulated"
-          value={list.isPending ? DASH : fmt.int(total(open, (t) => t.simulated))}
+          label="Submittable Alphas"
+          value={discovery.isPending ? DASH : fmt.int(discovery.data?.summary.submittableAlphas ?? 0)}
+          tone={(discovery.data?.summary.submittableAlphas ?? 0) > 0 ? 'profit' : 'neutral'}
+        />
+        <Metric
+          boxed
+          label="High-Performing"
+          value={discovery.isPending ? DASH : fmt.int(discovery.data?.summary.highPerformingAlphas ?? 0)}
+          tone="profit"
+          hint="Sharpe ≥ 1.25"
+        />
+        <Metric
+          boxed
+          label="Regions Covered"
+          value={discovery.isPending ? DASH : fmt.int(discovery.data?.summary.regionsCovered ?? 0)}
+          hint={
+            discovery.data?.summary.regions?.length
+              ? `${discovery.data.summary.regions.slice(0, 3).join(', ')}...`
+              : undefined
+          }
         />
       </div>
       {list.isError && all.length > 0 && (
@@ -397,7 +430,15 @@ export function TasksScreen() {
               { value: 'submittable', label: 'Submittable Alphas' },
             ]}
             value={view}
-            onChange={setView}
+            onChange={(v) => {
+              setView(v)
+              if (typeof window !== 'undefined') {
+                const url = new URL(window.location.href)
+                if (v === 'submittable') url.searchParams.set('view', 'submittable')
+                else url.searchParams.delete('view')
+                window.history.replaceState({}, '', url.toString())
+              }
+            }}
           />
         }
       >

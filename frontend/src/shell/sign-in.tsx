@@ -206,6 +206,11 @@ function Verification({
           clearInterval(timer)
           popup.current?.close()
           onVerified()
+        } else if (!session.inquiry || session.inquiry !== inquiry) {
+          stopped = true
+          clearInterval(timer)
+          setWaiting(false)
+          setProblem(session.detail || 'The verification link has expired. Please sign in again.')
         }
       } catch (error) {
         // Asking early is normal and answers unauthenticated; a real failure stops the wait
