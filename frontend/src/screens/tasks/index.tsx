@@ -416,19 +416,25 @@ export function TasksScreen() {
           value={
             discovery.isPending && list.isPending
               ? DASH
-              : fmt.int(discovery.data?.summary.simulationsCompleted ?? total(open, (t) => t.simulated))
+              : fmt.int(
+                  discovery.data?.summary.simulationsCompleted ?? total(open, (t) => t.simulated),
+                )
           }
         />
         <Metric
           boxed
           label="Submittable Alphas"
-          value={discovery.isPending ? DASH : fmt.int(discovery.data?.summary.submittableAlphas ?? 0)}
+          value={
+            discovery.isPending ? DASH : fmt.int(discovery.data?.summary.submittableAlphas ?? 0)
+          }
           tone={(discovery.data?.summary.submittableAlphas ?? 0) > 0 ? 'profit' : 'neutral'}
         />
         <Metric
           boxed
           label="High-Performing"
-          value={discovery.isPending ? DASH : fmt.int(discovery.data?.summary.highPerformingAlphas ?? 0)}
+          value={
+            discovery.isPending ? DASH : fmt.int(discovery.data?.summary.highPerformingAlphas ?? 0)
+          }
           tone="profit"
           hint="Sharpe ≥ 1.25"
         />

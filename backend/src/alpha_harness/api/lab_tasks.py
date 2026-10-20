@@ -35,10 +35,10 @@ from ..labs import scheduler, search
 from ..labs.objectives import OBJECTIVES, StudyNotFoundError
 from ..labs.params import (
     CORRELATION_BREAKER,
-    POWER_POOL_SAMPLER,
     SETTINGS_SAMPLER,
     TASK_SAMPLERS,
     TEMPLATE_SAMPLER,
+    PowerPoolParams,
     task_params,
 )
 from ..labs.study import ranked
@@ -52,6 +52,7 @@ from ..vault.yields import (
     checks_of,
     clean,
     is_submitted,
+    verdict,
 )
 from .deps import State, refuse
 
@@ -284,7 +285,10 @@ async def _rows(state: Any) -> list[Study]:
         return list(
             (
                 await session.scalars(
-                    select(Study).where(Study.sampler.in_(TASK_SAMPLERS)).order_by(Study.id.desc()).limit(50)
+                    select(Study)
+                    .where(Study.sampler.in_(TASK_SAMPLERS))
+                    .order_by(Study.id.desc())
+                    .limit(50)
                 )
             ).all()
         )
@@ -456,8 +460,8 @@ async def _queue(state: Any, ids: list[int]) -> None:
                     row.status = StudyStatus.QUEUED
                     params = task_params(row)
                     params.queued_at = queued_at
-                    if row.sampler == POWER_POOL_SAMPLER:
-                        llm = dict(getattr(params, "llm", None) or {})
+                    if isinstance(params, PowerPoolParams):
+                        llm = dict(params.llm or {})
                         llm["failed"] = 0
                         params.llm = llm
                         power_pool_lab.reset_retry(task_id)
@@ -1058,7 +1062,9 @@ async def submittable_alphas(state: State) -> list[TaskAlpha]:
                         task.label
                         or task.template_name
                         or TASK_SAMPLERS.get(task.sampler, task.sampler)
-                    ) if task else "Research Vault",
+                    )
+                    if task
+                    else "Research Vault",
                 }
             )
         )
@@ -1080,9 +1086,7 @@ async def submittable_alphas(state: State) -> list[TaskAlpha]:
             seen.add(aid)
             chk = checks_of(vr.get("checks"))
             v_failed = [
-                str(c.get("name"))
-                for c in chk
-                if str(c.get("result", "")).upper() in REFUSING
+                str(c.get("name")) for c in chk if str(c.get("result", "")).upper() in REFUSING
             ]
             v_refused = [c for c in v_failed if str(c).upper() not in IGNORED_CHECKS]
             v_sub = len(v_refused) == 0 and len(chk) > 0
@@ -1178,9 +1182,9 @@ async def discover_alphas(
     # Scopes and region breakdown
     sub_filter = (
         "checks IS NOT NULL AND (status IS NULL OR status = 'UNSUBMITTED') "
-        "AND checks NOT LIKE '%\"result\"%\"FAIL\"%' "
-        "AND checks NOT LIKE '%\"result\"%\"ERROR\"%' "
-        "AND checks LIKE '%\"result\"%\"PASS\"%'"
+        'AND checks NOT LIKE \'%"result"%"FAIL"%\' '
+        'AND checks NOT LIKE \'%"result"%"ERROR"%\' '
+        'AND checks LIKE \'%"result"%"PASS"%\''
     )
     region_rows = await state.catalog.query(
         f"""
@@ -1242,22 +1246,22 @@ async def discover_alphas(
     if status == "submittable":
         where_clauses.append(
             "a.checks IS NOT NULL AND (a.status IS NULL OR a.status = 'UNSUBMITTED') "
-            "AND a.checks NOT LIKE '%\"result\"%\"FAIL\"%' "
-            "AND a.checks NOT LIKE '%\"result\"%\"ERROR\"%' "
-            "AND a.checks LIKE '%\"result\"%\"PASS\"%'"
+            'AND a.checks NOT LIKE \'%"result"%"FAIL"%\' '
+            'AND a.checks NOT LIKE \'%"result"%"ERROR"%\' '
+            'AND a.checks LIKE \'%"result"%"PASS"%\''
         )
     elif status == "passed_checks":
         where_clauses.append(
-            "a.checks IS NOT NULL AND a.checks NOT LIKE '%\"result\"%\"FAIL\"%' "
-            "AND a.checks NOT LIKE '%\"result\"%\"ERROR\"%' "
-            "AND a.checks LIKE '%\"result\"%\"PASS\"%'"
+            'a.checks IS NOT NULL AND a.checks NOT LIKE \'%"result"%"FAIL"%\' '
+            'AND a.checks NOT LIKE \'%"result"%"ERROR"%\' '
+            'AND a.checks LIKE \'%"result"%"PASS"%\''
         )
     elif status == "high_performing":
         where_clauses.append(
             "a.sharpe IS NOT NULL AND a.sharpe >= 1.25 AND (a.fitness IS NULL OR a.fitness >= 1.0)"
         )
     elif status == "pending":
-        where_clauses.append("a.checks LIKE '%\"result\"%\"PENDING\"%'")
+        where_clauses.append('a.checks LIKE \'%"result"%"PENDING"%\'')
 
     if dataset_id:
         ds_fields = await state.catalog.query(
@@ -1273,7 +1277,8 @@ async def discover_alphas(
     where_sql = " AND ".join(where_clauses)
     total = int(
         await state.catalog.scalar(
-            f"SELECT count(*) FROM alpha a WHERE {where_sql}", params  # noqa: S608
+            f"SELECT count(*) FROM alpha a WHERE {where_sql}",
+            params,  # noqa: S608
         )
         or 0
     )
@@ -1353,9 +1358,7 @@ async def discover_alphas(
             v_status = "pending"
 
         failed_chk = [
-            str(c.get("name"))
-            for c in chk
-            if str(c.get("result", "")).upper() in REFUSING
+            str(c.get("name")) for c in chk if str(c.get("result", "")).upper() in REFUSING
         ]
         refused_by = [c for c in failed_chk if str(c).upper() not in IGNORED_CHECKS]
         sub_status = str(r.get("status") or "UNSUBMITTED")
@@ -1419,9 +1422,7 @@ async def discover_alphas(
 
 
 @router.post("/submit-alpha")
-async def submit_alpha_endpoint(
-    body: SubmitAlphaRequest, state: State
-) -> SubmitAlphaResponse:
+async def submit_alpha_endpoint(body: SubmitAlphaRequest, state: State) -> SubmitAlphaResponse:
     """Submit an eligible Alpha to WorldQuant BRAIN with verification.
     Submission is an explicit user action and irreversible on the platform.
     """
@@ -1474,4 +1475,3 @@ async def submit_alpha_endpoint(
         brain_url=f"https://platform.worldquantbrain.com/alpha/{alpha_id}",
         message=f"Alpha {alpha_id} submitted successfully to WorldQuant BRAIN.",
     )
-

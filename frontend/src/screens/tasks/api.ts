@@ -151,4 +151,3 @@ export const labTasks = {
   /** Stops that check; the answers already back stay. */
   stopProdCorrelation: () => http.post<void>(`${B}/prod-correlation/stop`),
 }
-

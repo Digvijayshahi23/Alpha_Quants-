@@ -606,17 +606,20 @@ class Submission(Base):
     alpha_id: Mapped[str] = mapped_column(String(64), primary_key=True)
     submitted_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow)
 
+
 # --- Quarterly Research OS ------------------------------------------------
+
 
 class QuarterConfig(Base):
     """Phase 2 & 3: Quarter Engine and Configured Thresholds."""
+
     __tablename__ = "quarter_config"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     year: Mapped[int] = mapped_column(Integer)
-    quarter: Mapped[int] = mapped_column(Integer) # 1, 2, 3, 4
-    start_date: Mapped[str] = mapped_column(String(10)) # YYYY-MM-DD
-    end_date: Mapped[str] = mapped_column(String(10))   # YYYY-MM-DD
+    quarter: Mapped[int] = mapped_column(Integer)  # 1, 2, 3, 4
+    start_date: Mapped[str] = mapped_column(String(10))  # YYYY-MM-DD
+    end_date: Mapped[str] = mapped_column(String(10))  # YYYY-MM-DD
 
     # Minimum Targets (e.g. Expert)
     min_signals: Mapped[int] = mapped_column(Integer, default=20)
@@ -639,6 +642,7 @@ class QuarterConfig(Base):
 
 class ResearchFamily(Base):
     """Phase 9: Alpha Families."""
+
     __tablename__ = "research_family"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -650,6 +654,7 @@ class ResearchFamily(Base):
 
 class ResearchSession(Base):
     """Phase 15 & 37: Structured Research Memory."""
+
     __tablename__ = "research_session"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -667,11 +672,10 @@ class ResearchSession(Base):
     fields: Mapped[list[Any]] = mapped_column(JSON, default=list)
     operators: Mapped[list[Any]] = mapped_column(JSON, default=list)
 
-    # Outcomes
-    status: Mapped[str] = mapped_column(String(32), default="IN_PROGRESS") # IN_PROGRESS, KEEP, REPAIR, REJECT, DEFER
+    # Research session review state
+    status: Mapped[str] = mapped_column(String(32), default="IN_PROGRESS")
     failure_reason: Mapped[str | None] = mapped_column(String(128))
     repair_notes: Mapped[str | None] = mapped_column(Text)
 
     created_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow, onupdate=utcnow)
-

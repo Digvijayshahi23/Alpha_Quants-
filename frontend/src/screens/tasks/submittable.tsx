@@ -29,12 +29,8 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/cn'
 import { fmt } from '@/lib/format'
 import { useRefetchOn } from '@/lib/ws'
-import {
-  labTasks,
-  type DiscoveryAlpha,
-  type DiscoveryParams,
-} from '@/screens/tasks/api'
 import { AlphaDetailDrawer } from '@/screens/tasks/alpha-detail-drawer'
+import { type DiscoveryAlpha, type DiscoveryParams, labTasks } from '@/screens/tasks/api'
 import {
   Badge,
   Button,
@@ -44,15 +40,29 @@ import {
   Metric,
   Panel,
   Skeleton,
-  TEXT_TONE,
   signTone,
+  TEXT_TONE,
 } from '@/ui/kit'
 import { Confirm } from '@/ui/overlay'
 
-const UNIVERSES = ['ALL', 'TOP3000', 'TOP2000', 'TOP1000', 'TOP800', 'TOP600', 'TOP500', 'TOP400', 'TOP200']
+const UNIVERSES = [
+  'ALL',
+  'TOP3000',
+  'TOP2000',
+  'TOP1000',
+  'TOP800',
+  'TOP600',
+  'TOP500',
+  'TOP400',
+  'TOP200',
+]
 const NEUTRALIZATIONS = ['ALL', 'NONE', 'INDUSTRY', 'SUBINDUSTRY', 'SECTOR', 'MARKET', 'CROWDING']
 
-export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: string) => void } = {}) {
+export function SubmittableAlphas({
+  onOpenAlpha,
+}: {
+  onOpenAlpha?: (alphaId: string) => void
+} = {}) {
   const queryClient = useQueryClient()
 
   // State: Filter Toolbar
@@ -137,7 +147,8 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
     if (typeof window !== 'undefined' && alphas.length > 0) {
       const inspectId = new URLSearchParams(window.location.search).get('inspect')
       if (inspectId) {
-        const found = inspectId === 'first' ? alphas[0] : alphas.find((a) => a.alphaId === inspectId)
+        const found =
+          inspectId === 'first' ? alphas[0] : alphas.find((a) => a.alphaId === inspectId)
         if (found) setInspectedAlpha(found)
       }
     }
@@ -323,7 +334,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                   {fmt.int(rm.evaluated)}
                 </span>
                 {rm.highPerforming > 0 && (
-                  <span className="size-1.5 rounded-full bg-pnl-positive" title={`${rm.highPerforming} high-performing alphas`} />
+                  <span
+                    className="size-1.5 rounded-full bg-pnl-positive"
+                    title={`${rm.highPerforming} high-performing alphas`}
+                  />
                 )}
               </button>
             ))}
@@ -388,13 +402,17 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
               boxed
               label="Best Sharpe"
               value={activeRegionMetric.bestSharpe ? fmt.ratio(activeRegionMetric.bestSharpe) : '—'}
-              tone={activeRegionMetric.bestSharpe ? signTone(activeRegionMetric.bestSharpe) : 'neutral'}
+              tone={
+                activeRegionMetric.bestSharpe ? signTone(activeRegionMetric.bestSharpe) : 'neutral'
+              }
               hint={selectedRegion}
             />
             <Metric
               boxed
               label="Best Fitness"
-              value={activeRegionMetric.bestFitness ? fmt.ratio(activeRegionMetric.bestFitness) : '—'}
+              value={
+                activeRegionMetric.bestFitness ? fmt.ratio(activeRegionMetric.bestFitness) : '—'
+              }
               tone={activeRegionMetric.bestFitness ? 'profit' : 'neutral'}
               hint={selectedRegion}
             />
@@ -627,7 +645,12 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                     </button>
                   </Badge>
                 )}
-                <Button size="icon-sm" variant="ghost" onClick={handleResetFilters} title="Reset all filters">
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  onClick={handleResetFilters}
+                  title="Reset all filters"
+                >
                   <RotateCcwIcon className="size-3.5" />
                 </Button>
               </div>
@@ -739,7 +762,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                     )}
                     onClick={() => {
                       if (sortBy === 'sharpe') setSortDesc(!sortDesc)
-                      else { setSortBy('sharpe'); setSortDesc(true) }
+                      else {
+                        setSortBy('sharpe')
+                        setSortDesc(true)
+                      }
                     }}
                   >
                     Sharpe {sortBy === 'sharpe' ? (sortDesc ? '↓' : '↑') : ''}
@@ -751,7 +777,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                     )}
                     onClick={() => {
                       if (sortBy === 'fitness') setSortDesc(!sortDesc)
-                      else { setSortBy('fitness'); setSortDesc(true) }
+                      else {
+                        setSortBy('fitness')
+                        setSortDesc(true)
+                      }
                     }}
                   >
                     Fitness {sortBy === 'fitness' ? (sortDesc ? '↓' : '↑') : ''}
@@ -763,7 +792,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                     )}
                     onClick={() => {
                       if (sortBy === 'returns') setSortDesc(!sortDesc)
-                      else { setSortBy('returns'); setSortDesc(true) }
+                      else {
+                        setSortBy('returns')
+                        setSortDesc(true)
+                      }
                     }}
                   >
                     Returns {sortBy === 'returns' ? (sortDesc ? '↓' : '↑') : ''}
@@ -775,7 +807,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                     )}
                     onClick={() => {
                       if (sortBy === 'turnover') setSortDesc(!sortDesc)
-                      else { setSortBy('turnover'); setSortDesc(true) }
+                      else {
+                        setSortBy('turnover')
+                        setSortDesc(true)
+                      }
                     }}
                   >
                     Turnover {sortBy === 'turnover' ? (sortDesc ? '↓' : '↑') : ''}
@@ -787,7 +822,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                     )}
                     onClick={() => {
                       if (sortBy === 'drawdown') setSortDesc(!sortDesc)
-                      else { setSortBy('drawdown'); setSortDesc(true) }
+                      else {
+                        setSortBy('drawdown')
+                        setSortDesc(true)
+                      }
                     }}
                   >
                     Drawdown {sortBy === 'drawdown' ? (sortDesc ? '↓' : '↑') : ''}
@@ -807,7 +845,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                   return (
                     <tr
                       key={alpha.alphaId}
-                      onClick={() => setInspectedAlpha(alpha)}
+                      onClick={() => {
+                        onOpenAlpha?.(alpha.alphaId)
+                        setInspectedAlpha(alpha)
+                      }}
                       className="cursor-pointer transition-colors hover:bg-surface-2"
                     >
                       {/* Rank */}
@@ -863,7 +904,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
 
                       {/* Dataset & Category */}
                       <td className="px-3 py-2">
-                        <div className="flex flex-col truncate" title={`${alpha.datasetId ?? '—'} (${alpha.category ?? '—'})`}>
+                        <div
+                          className="flex flex-col truncate"
+                          title={`${alpha.datasetId ?? '—'} (${alpha.category ?? '—'})`}
+                        >
                           <span className="truncate text-ink font-medium">
                             {alpha.datasetId ?? '—'}
                           </span>
@@ -876,14 +920,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                       </td>
 
                       {/* Delay */}
-                      <td className="num px-3 py-2 text-ink-muted">
-                        D{alpha.delay}
-                      </td>
+                      <td className="num px-3 py-2 text-ink-muted">D{alpha.delay}</td>
 
                       {/* Universe */}
-                      <td className="num px-3 py-2 text-ink-muted truncate">
-                        {alpha.universe}
-                      </td>
+                      <td className="num px-3 py-2 text-ink-muted truncate">{alpha.universe}</td>
 
                       {/* Neutralization */}
                       <td className="num px-3 py-2 text-ink-muted truncate">
@@ -899,7 +939,13 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
 
                       {/* Fitness */}
                       <td className="num px-3 py-2 text-right">
-                        <span className={alpha.fitness != null && alpha.fitness >= 1 ? 'text-pnl-positive' : 'text-ink'}>
+                        <span
+                          className={
+                            alpha.fitness != null && alpha.fitness >= 1
+                              ? 'text-pnl-positive'
+                              : 'text-ink'
+                          }
+                        >
                           {fmt.ratio(alpha.fitness)}
                         </span>
                       </td>
@@ -975,14 +1021,17 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                       </td>
 
                       {/* Actions */}
-                      <td className="px-3 py-2 text-right" onClick={(e) => e.stopPropagation()}>
+                      <td className="px-3 py-2 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           {isEligible && (
                             <Button
                               size="icon-sm"
                               variant="primary"
                               title="Submit eligible alpha to BRAIN"
-                              onClick={() => setSubmittingAlpha(alpha)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setSubmittingAlpha(alpha)
+                              }}
                             >
                               <SendIcon className="size-3.5" />
                             </Button>
@@ -991,7 +1040,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                             size="icon-sm"
                             variant="secondary"
                             title="Inspect Alpha Details"
-                            onClick={() => setInspectedAlpha(alpha)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setInspectedAlpha(alpha)
+                            }}
                           >
                             <SparklesIcon className="size-3.5" />
                           </Button>
@@ -999,7 +1051,10 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
                             size="icon-sm"
                             variant="ghost"
                             title="Open on WorldQuant BRAIN"
-                            onClick={() => window.open(alpha.brainUrl, '_blank', 'noopener,noreferrer')}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              window.open(alpha.brainUrl, '_blank', 'noopener,noreferrer')
+                            }}
                           >
                             <ExternalLinkIcon className="size-3.5" />
                           </Button>
@@ -1016,7 +1071,8 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
         {/* Bottom Pagination Bar */}
         <div className="flex items-center justify-between border-t border-hairline px-4 py-3 bg-surface-2">
           <span className="text-caption text-ink-subtle">
-            Showing {alphas.length > 0 ? page * pageSize + 1 : 0} to {Math.min((page + 1) * pageSize, totalCount)} of {fmt.int(totalCount)} matching alphas
+            Showing {alphas.length > 0 ? page * pageSize + 1 : 0} to{' '}
+            {Math.min((page + 1) * pageSize, totalCount)} of {fmt.int(totalCount)} matching alphas
           </span>
           <div className="flex items-center gap-2">
             <Button
@@ -1063,14 +1119,23 @@ export function SubmittableAlphas({ onOpenAlpha }: { onOpenAlpha?: (alphaId: str
         {submittingAlpha && (
           <div className="flex flex-col gap-3">
             <p className="text-body text-ink">
-              You are about to submit Alpha <strong className="font-mono text-primary">{submittingAlpha.alphaId}</strong> ({submittingAlpha.region} D{submittingAlpha.delay} {submittingAlpha.universe}) to WorldQuant BRAIN.
+              You are about to submit Alpha{' '}
+              <strong className="font-mono text-primary">{submittingAlpha.alphaId}</strong> (
+              {submittingAlpha.region} D{submittingAlpha.delay} {submittingAlpha.universe}) to
+              WorldQuant BRAIN.
             </p>
             <div className="rounded-md border border-hairline bg-surface-2 p-3 text-body-compact">
               <div className="grid grid-cols-2 gap-y-1 text-ink-muted">
-                <span>Sharpe:</span> <span className="font-medium text-pnl-positive">{fmt.ratio(submittingAlpha.sharpe)}</span>
-                <span>Fitness:</span> <span className="font-medium text-ink">{fmt.ratio(submittingAlpha.fitness)}</span>
-                <span>Returns:</span> <span className="font-medium text-ink">{fmt.pct(submittingAlpha.returns)}</span>
-                <span>Turnover:</span> <span className="font-medium text-ink">{fmt.pct(submittingAlpha.turnover)}</span>
+                <span>Sharpe:</span>{' '}
+                <span className="font-medium text-pnl-positive">
+                  {fmt.ratio(submittingAlpha.sharpe)}
+                </span>
+                <span>Fitness:</span>{' '}
+                <span className="font-medium text-ink">{fmt.ratio(submittingAlpha.fitness)}</span>
+                <span>Returns:</span>{' '}
+                <span className="font-medium text-ink">{fmt.pct(submittingAlpha.returns)}</span>
+                <span>Turnover:</span>{' '}
+                <span className="font-medium text-ink">{fmt.pct(submittingAlpha.turnover)}</span>
               </div>
             </div>
             <p className="text-caption text-ink-subtle">

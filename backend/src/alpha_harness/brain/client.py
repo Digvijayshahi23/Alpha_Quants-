@@ -175,7 +175,7 @@ class BrainClient:
 
     def clear_pause(self) -> None:
         """Reset the global rate limit pause. Useful after authentication."""
-        self._resume_at = 0.0
+        self._resume_at.clear()
 
     # -- cookie jar ------------------------------------------------------
 
@@ -420,11 +420,17 @@ class BrainClient:
                     body=body,
                 )
             case 503:
-                return BrainServiceUnavailable(f"{where}: service unavailable", status=503, body=body)
+                return BrainServiceUnavailable(
+                    f"{where}: service unavailable", status=503, body=body
+                )
             case _ if r.status >= 500:
-                return BrainServerError(f"{where}: server error {r.status}", status=r.status, body=body)
+                return BrainServerError(
+                    f"{where}: server error {r.status}", status=r.status, body=body
+                )
             case _:
-                return BrainError(f"{where}: unexpected status {r.status}", status=r.status, body=body)
+                return BrainError(
+                    f"{where}: unexpected status {r.status}", status=r.status, body=body
+                )
 
     async def request_retrying(
         self,

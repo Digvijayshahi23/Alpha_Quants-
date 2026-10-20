@@ -33,6 +33,7 @@ class QuarterTargets(Out):
     buffer_signals_pct: float = 1.1
     buffer_pyramids_pct: float = 1.1
 
+
 class QuarterConfigSchema(BaseModel):
     year: int
     quarter: int
@@ -103,7 +104,7 @@ async def get_or_create_current_quarter(state: State) -> QuarterConfig:
                 year=year,
                 quarter=q_num,
                 start_date=start_dt.isoformat(),
-                end_date=end_dt.isoformat()
+                end_date=end_dt.isoformat(),
             )
             session.add(row)
             await session.commit()
@@ -158,8 +159,14 @@ async def standing(state: State) -> QuarterStanding:
     remaining_signals = max(0, config.primary_signals - submitted)
     remaining_pyramids = max(0, config.primary_pyramids - pyramids_formulated)
 
-    req_daily_sig = (max(0, buffer_sig_target - submitted) / days_remaining) if days_remaining > 0 else 0
-    req_daily_pyr = (max(0, buffer_pyr_target - pyramids_formulated) / days_remaining) if days_remaining > 0 else 0
+    req_daily_sig = (
+        (max(0, buffer_sig_target - submitted) / days_remaining) if days_remaining > 0 else 0
+    )
+    req_daily_pyr = (
+        (max(0, buffer_pyr_target - pyramids_formulated) / days_remaining)
+        if days_remaining > 0
+        else 0
+    )
 
     pacing = QuarterPacing(
         days_elapsed=days_elapsed,
@@ -172,7 +179,7 @@ async def standing(state: State) -> QuarterStanding:
         required_daily_signals=round(req_daily_sig, 2),
         required_daily_pyramids=round(req_daily_pyr, 2),
         required_weekly_signals=round(req_daily_sig * 7, 2),
-        required_weekly_pyramids=round(req_daily_pyr * 7, 2)
+        required_weekly_pyramids=round(req_daily_pyr * 7, 2),
     )
 
     return QuarterStanding(
@@ -193,8 +200,9 @@ async def standing(state: State) -> QuarterStanding:
             buffer_signals_pct=config.buffer_signals_pct,
             buffer_pyramids_pct=config.buffer_pyramids_pct,
         ),
-        pacing=pacing
+        pacing=pacing,
     )
+
 
 @router.put("/config")
 async def update_config(payload: QuarterConfigSchema, state: State) -> QuarterTargets:
@@ -236,6 +244,7 @@ async def update_config(payload: QuarterConfigSchema, state: State) -> QuarterTa
             buffer_pyramids_pct=row.buffer_pyramids_pct,
         )
 
+
 class PyramidMatrixCell(Out):
     region: str
     delay: int
@@ -271,13 +280,10 @@ async def matrix(state: State) -> list[PyramidMatrixCell]:
         elif count > 0:
             status = "IN_PROGRESS"
 
-        cells.append(PyramidMatrixCell(
-            region=region,
-            delay=delay,
-            category=category,
-            alpha_count=count,
-            status=status
-        ))
+        cells.append(
+            PyramidMatrixCell(
+                region=region, delay=delay, category=category, alpha_count=count, status=status
+            )
+        )
 
     return cells
-

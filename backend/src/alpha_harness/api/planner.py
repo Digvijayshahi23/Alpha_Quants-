@@ -13,6 +13,7 @@ log = structlog.get_logger(__name__)
 
 router = APIRouter(prefix="/api/planner", tags=["planner"])
 
+
 class SessionIn(BaseModel):
     region: str | None = None
     delay: int | None = None
@@ -21,6 +22,7 @@ class SessionIn(BaseModel):
     hypothesis: str | None = None
     strategy_type: str | None = None
     status: str = "IN_PROGRESS"
+
 
 class SessionOut(Out):
     id: int
@@ -31,6 +33,7 @@ class SessionOut(Out):
     hypothesis: str | None = None
     strategy_type: str | None = None
     status: str
+
 
 @router.get("/sessions")
 async def get_sessions(state: State) -> list[SessionOut]:
@@ -52,9 +55,10 @@ async def get_sessions(state: State) -> list[SessionOut]:
             for s in result.scalars()
         ]
 
+
 @router.post("/sessions")
 async def create_session(payload: SessionIn, state: State) -> SessionOut:
-    async with state.db.begin() as session:
+    async with state.db.session() as session:
         db_sess = ResearchSession(
             region=payload.region,
             delay=payload.delay,
@@ -65,7 +69,7 @@ async def create_session(payload: SessionIn, state: State) -> SessionOut:
             status=payload.status,
         )
         session.add(db_sess)
-        await session.flush()
+        await session.commit()
 
         return SessionOut(
             id=db_sess.id,

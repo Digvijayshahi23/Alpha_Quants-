@@ -3,8 +3,8 @@
  * simulation configurations, performance metrics, validation checks, and explicit submission.
  */
 
-import { useState } from 'react'
 import {
+  AlertTriangleIcon,
   CheckCircle2Icon,
   CopyIcon,
   ExternalLinkIcon,
@@ -12,20 +12,13 @@ import {
   ShieldAlertIcon,
   ShieldCheckIcon,
   XCircleIcon,
-  AlertTriangleIcon,
 } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { fmt } from '@/lib/format'
-import {
-  Badge,
-  Button,
-  KV,
-  Metric,
-  Notice,
-  signTone,
-} from '@/ui/kit'
+import { type DiscoveryAlpha, labTasks } from '@/screens/tasks/api'
+import { Badge, Button, KV, Metric, Notice, signTone } from '@/ui/kit'
 import { Confirm, Sheet } from '@/ui/overlay'
-import { labTasks, type DiscoveryAlpha } from '@/screens/tasks/api'
 
 interface AlphaDetailDrawerProps {
   alpha: DiscoveryAlpha | null
@@ -33,11 +26,7 @@ interface AlphaDetailDrawerProps {
   onAlphaSubmitted?: () => void
 }
 
-export function AlphaDetailDrawer({
-  alpha,
-  onClose,
-  onAlphaSubmitted,
-}: AlphaDetailDrawerProps) {
+export function AlphaDetailDrawer({ alpha, onClose, onAlphaSubmitted }: AlphaDetailDrawerProps) {
   const [submitting, setSubmitting] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
 
@@ -98,24 +87,23 @@ export function AlphaDetailDrawer({
               <div className="flex items-center gap-2.5">
                 <ShieldCheckIcon className="size-5 shrink-0 text-pnl-positive" />
                 <div>
-                  <h4 className="text-body font-medium text-pnl-positive">Eligible for Submission</h4>
+                  <h4 className="text-body font-medium text-pnl-positive">
+                    Eligible for Submission
+                  </h4>
                   <p className="text-caption text-ink-muted">
                     Cleared all platform validation gates with zero refusing checks.
                   </p>
                 </div>
               </div>
-              <Button
-                size="sm"
-                variant="primary"
-                onClick={() => setConfirmOpen(true)}
-              >
+              <Button size="sm" variant="primary" onClick={() => setConfirmOpen(true)}>
                 <SendIcon />
                 Submit Alpha
               </Button>
             </div>
           ) : alpha.validationStatus === 'pending' ? (
             <Notice tone="warn" title="Validation Checks Pending">
-              Some platform checks are still pending resolution (e.g. self-correlation or ladder Sharpe).
+              Some platform checks are still pending resolution (e.g. self-correlation or ladder
+              Sharpe).
             </Notice>
           ) : (
             <div className="flex flex-col gap-1.5 rounded-md border border-pnl-negative/30 bg-pnl-negative/10 p-3.5">
@@ -251,7 +239,10 @@ export function AlphaDetailDrawer({
                   ['Dataset', alpha.datasetId ?? '—'],
                   ['Category', alpha.category ?? '—'],
                   ['Submission Status', alpha.submissionStatus],
-                  ['Created', alpha.dateCreated ? alpha.dateCreated.slice(0, 19).replace('T', ' ') : '—'],
+                  [
+                    'Created',
+                    alpha.dateCreated ? alpha.dateCreated.slice(0, 19).replace('T', ' ') : '—',
+                  ],
                 ]}
               />
             </div>
@@ -265,7 +256,9 @@ export function AlphaDetailDrawer({
               </span>
               <span className="text-caption text-ink-subtle">
                 {alpha.failedChecks.length > 0 ? (
-                  <span className="text-pnl-negative font-medium">{alpha.failedChecks.length} failed</span>
+                  <span className="text-pnl-negative font-medium">
+                    {alpha.failedChecks.length} failed
+                  </span>
                 ) : (
                   <span className="text-pnl-positive font-medium">All checks passed</span>
                 )}
@@ -299,8 +292,12 @@ export function AlphaDetailDrawer({
                         <tr key={chk.name || i} className="hover:bg-surface-3/50">
                           <td className="px-3 py-2 font-mono text-ink">
                             <div className="flex items-center gap-1.5">
-                              {isPass && <CheckCircle2Icon className="size-3.5 text-pnl-positive" />}
-                              {isWarn && <AlertTriangleIcon className="size-3.5 text-status-warning" />}
+                              {isPass && (
+                                <CheckCircle2Icon className="size-3.5 text-pnl-positive" />
+                              )}
+                              {isWarn && (
+                                <AlertTriangleIcon className="size-3.5 text-status-warning" />
+                              )}
                               {isFail && <XCircleIcon className="size-3.5 text-pnl-negative" />}
                               <span>{chk.name}</span>
                             </div>
@@ -309,10 +306,20 @@ export function AlphaDetailDrawer({
                             <Badge tone={tone}>{chk.result}</Badge>
                           </td>
                           <td className="px-3 py-2 text-right font-mono text-ink-muted">
-                            {chk.value != null ? (typeof chk.value === 'number' ? fmt.ratio(chk.value) : String(chk.value)) : '—'}
+                            {chk.value != null
+                              ? typeof chk.value === 'number'
+                                ? fmt.ratio(chk.value)
+                                : String(chk.value)
+                              : '—'}
                           </td>
                           <td className="px-3 py-2 text-right font-mono text-ink-subtle">
-                            {chk.limit != null ? (typeof chk.limit === 'number' ? fmt.ratio(chk.limit) : String(chk.limit)) : chk.threshold != null ? String(chk.threshold) : '—'}
+                            {chk.limit != null
+                              ? typeof chk.limit === 'number'
+                                ? fmt.ratio(chk.limit)
+                                : String(chk.limit)
+                              : chk.threshold != null
+                                ? String(chk.threshold)
+                                : '—'}
                           </td>
                         </tr>
                       )
@@ -336,15 +343,18 @@ export function AlphaDetailDrawer({
       >
         <div className="flex flex-col gap-3">
           <p className="text-body text-ink">
-            Are you sure you want to submit Alpha <strong className="font-mono text-primary">{alpha.alphaId}</strong> to WorldQuant BRAIN?
+            Are you sure you want to submit Alpha{' '}
+            <strong className="font-mono text-primary">{alpha.alphaId}</strong> to WorldQuant BRAIN?
           </p>
           <div className="rounded-md border border-hairline bg-surface-2 p-3 text-body-compact">
             <div className="grid grid-cols-2 gap-y-1 text-ink-muted">
               <span>Region:</span> <span className="font-medium text-ink">{alpha.region}</span>
               <span>Universe:</span> <span className="font-medium text-ink">{alpha.universe}</span>
               <span>Delay:</span> <span className="font-medium text-ink">D{alpha.delay}</span>
-              <span>Sharpe:</span> <span className="font-medium text-pnl-positive">{fmt.ratio(alpha.sharpe)}</span>
-              <span>Fitness:</span> <span className="font-medium text-ink">{fmt.ratio(alpha.fitness)}</span>
+              <span>Sharpe:</span>{' '}
+              <span className="font-medium text-pnl-positive">{fmt.ratio(alpha.sharpe)}</span>
+              <span>Fitness:</span>{' '}
+              <span className="font-medium text-ink">{fmt.ratio(alpha.fitness)}</span>
             </div>
           </div>
           <Notice tone="warn" title="Permanent Platform Action">

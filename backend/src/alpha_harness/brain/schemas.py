@@ -421,6 +421,7 @@ class BulkField(msgspec.Struct, rename="camel"):
     date_coverage: float | None = None
     user_count: int | None = None
     alpha_count: int | None = None
+    pyramid_multiplier: float | None = None
     #: Untyped: plain names once, ``{id, name, multiplier}`` objects since. Stored as JSON
     #: and read by name, so either shape works and a third cannot fail a market's sync.
     themes: list[Any] | None = None

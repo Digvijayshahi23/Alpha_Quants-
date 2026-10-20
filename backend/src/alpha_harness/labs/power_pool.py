@@ -315,7 +315,6 @@ def memory_text(done: list[Any], waiting: list[Any], thrown: list[Any]) -> str:
     return "\n".join(parts) or "None yet."
 
 
-
 #: What a model cannot infer from the market line when the region is ALL. The warning about
 #: cross-sectional comparison is BRAIN's own: one expression is translated into four
 #: markets whose currencies, market caps and face values are not on one scale.

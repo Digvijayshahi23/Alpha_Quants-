@@ -73,15 +73,12 @@ def _is_rate_limit(exc: Exception) -> tuple[bool, bool]:
         or "too many requests" in text
     )
     daily = (
-        (
-            "per day" in text
-            or "perday" in text
-            or "daily" in text
-            or "requests per day" in text
-            or "rpd" in text
-        )
-        and "please try again in" not in text
-    )
+        "per day" in text
+        or "perday" in text
+        or "daily" in text
+        or "requests per day" in text
+        or "rpd" in text
+    ) and "please try again in" not in text
     return limited, daily
 
 

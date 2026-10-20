@@ -498,7 +498,9 @@ class SimulationTracker:
                         Outcome(
                             "finished",
                             SimStatus.TIMEOUT,
-                            message="Simulation timed out on BRAIN after >2 hours without completion.",
+                            message=(
+                                "Simulation timed out on BRAIN after >2 hours without completion."
+                            ),
                         ),
                     )
                 if outcome.progress is None or outcome.progress == record.progress:
@@ -511,10 +513,8 @@ class SimulationTracker:
                     )
                 return True
             case "fanout":
-                self._poll_failures.pop(record.id, None)
                 return await self._hand_over_children(record, outcome)
             case "gone" | "finished":
-                self._poll_failures.pop(record.id, None)
                 return await self._apply_terminal(record, outcome)
 
     async def read(self, platform_id: str) -> tuple[Outcome, dict[str, Any]] | None:
