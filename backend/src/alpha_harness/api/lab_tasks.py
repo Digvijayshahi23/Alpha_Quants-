@@ -1277,8 +1277,8 @@ async def discover_alphas(
     where_sql = " AND ".join(where_clauses)
     total = int(
         await state.catalog.scalar(
-            f"SELECT count(*) FROM alpha a WHERE {where_sql}",
-            params,  # noqa: S608
+            f"SELECT count(*) FROM alpha a WHERE {where_sql}",  # noqa: S608
+            params,
         )
         or 0
     )
