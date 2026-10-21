@@ -302,7 +302,7 @@ export function SubmittableAlphas({
               className={cn(
                 'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-body-compact font-medium transition-colors',
                 selectedRegion === 'ALL'
-                  ? 'bg-primary text-primary-contrast shadow-sm'
+                  ? 'bg-primary text-on-primary'
                   : 'bg-surface-2 text-ink-muted hover:bg-surface-3 hover:text-ink',
               )}
             >
@@ -325,7 +325,7 @@ export function SubmittableAlphas({
                 className={cn(
                   'flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-body-compact font-medium transition-colors',
                   selectedRegion === rm.region
-                    ? 'bg-primary text-primary-contrast shadow-sm'
+                    ? 'bg-primary text-on-primary'
                     : 'bg-surface-2 text-ink-muted hover:bg-surface-3 hover:text-ink',
                 )}
               >
@@ -421,7 +421,7 @@ export function SubmittableAlphas({
       </div>
 
       {/* ── Multidimensional Filter Toolbar (PHASE 4 & PHASE 5) ───────────────────── */}
-      <div className="flex flex-col gap-3 rounded-lg border border-hairline bg-surface-2 p-3.5 shadow-xs">
+      <div className="flex flex-col gap-3 rounded-lg border border-hairline bg-surface-2 p-3.5">
         <div className="flex flex-wrap items-center gap-3">
           {/* Text Search */}
           <div className="relative min-w-[240px] flex-1">

@@ -88,7 +88,7 @@ def configure_logging() -> None:
             structlog.processors.StackInfoRenderer(),
             structlog.dev.set_exc_info,
             structlog.processors.TimeStamper(fmt="%H:%M:%S", utc=False),
-            structlog.dev.ConsoleRenderer(colors=True),
+            structlog.dev.ConsoleRenderer(colors=True, force_colors=True),
         ],
         wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
         logger_factory=structlog.PrintLoggerFactory(),

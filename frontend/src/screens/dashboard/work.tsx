@@ -59,12 +59,36 @@ export function WorkInFlight() {
   const stoppable = rows.filter((r) => r.waiting > 0)
   const waitingTotal = stoppable.reduce((sum, r) => sum + r.waiting, 0)
 
+  function formatTask(taskKey: string) {
+    if (taskKey.startsWith('search-')) {
+      return { lab: 'Search Lab', id: taskKey.slice(7) }
+    }
+    if (taskKey.startsWith('template-')) {
+      return { lab: 'Template Lab', id: taskKey.slice(9) }
+    }
+    if (taskKey.startsWith('evolution-')) {
+      return { lab: 'Evolution Lab', id: taskKey.slice(10) }
+    }
+    if (taskKey.startsWith('pool-') || taskKey.startsWith('power-pool-')) {
+      return { lab: 'Power Pool', id: taskKey.replace(/^(power-)?pool-/, '') }
+    }
+    return { lab: 'Task', id: taskKey }
+  }
+
   const columns: Column<WorkRow>[] = [
     {
       key: 'task',
       header: 'Task',
       width: 'minmax(220px,3fr)',
-      cell: (r) => <span className="num truncate text-ink">{r.task}</span>,
+      cell: (r) => {
+        const { lab, id } = formatTask(r.task)
+        return (
+          <div className="flex items-center gap-2 min-w-0" title={r.task}>
+            <span className="font-medium text-ink truncate">{lab}</span>
+            <span className="num text-caption text-ink-subtle truncate">#{id.slice(-6)}</span>
+          </div>
+        )
+      },
     },
     {
       key: 'status',

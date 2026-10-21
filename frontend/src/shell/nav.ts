@@ -1,5 +1,6 @@
 import {
   ChartPieIcon,
+  CompassIcon,
   DatabaseIcon,
   FlaskConicalIcon,
   Grid3x3Icon,
@@ -57,34 +58,16 @@ export const NAV = [
     icon: LayoutGridIcon,
   },
   {
-    to: '/quarter',
-    group: 'Research',
-    label: 'Quarter Command Center',
-    icon: SparklesIcon,
-  },
-  {
-    to: '/research-sessions',
-    group: 'Research',
-    label: 'Research Sessions',
-    icon: FlaskConicalIcon,
-  },
-  {
     to: '/matrix',
-    group: 'Results',
+    group: '',
     label: 'Simulation Matrix',
     icon: Grid3x3Icon,
   },
   {
-    to: '/pyramid-matrix',
-    group: 'Pyramids',
-    label: 'Pyramid Matrix',
-    icon: Grid3x3Icon,
-  },
-  {
-    to: '/pyramid-targets',
-    group: 'Pyramids',
-    label: 'Pyramid Targets',
-    icon: ListChecksIcon,
+    to: '/research-sessions',
+    group: 'Research',
+    label: 'Research Planner',
+    icon: CompassIcon,
   },
   {
     to: '/data',
@@ -126,16 +109,22 @@ export const NAV = [
     icon: ChartPieIcon,
   },
   {
-    to: '/competitions',
+    to: '/quarter',
     group: 'BRAIN',
-    label: 'Competitions',
-    icon: TrophyIcon,
+    label: 'Quarter Command Center',
+    icon: SparklesIcon,
   },
   {
     to: '/pyramids',
     group: 'BRAIN',
     label: 'Pyramids',
     icon: TriangleIcon,
+  },
+  {
+    to: '/competitions',
+    group: 'BRAIN',
+    label: 'Competitions',
+    icon: TrophyIcon,
   },
   {
     to: '/sync',

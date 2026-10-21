@@ -462,9 +462,8 @@ class Backfill:
             complete = list(found.values())
             if complete:
                 await self.vault.save_alphas(complete)
-        # Anything the page could not provide is read one by one below.
-        except Exception:
-            log.warning("vault.capture_list_failed", count=len(alpha_ids), exc_info=True)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("vault.capture_list_failed", count=len(alpha_ids), error=str(exc))
             complete = []
 
         for alpha in complete:

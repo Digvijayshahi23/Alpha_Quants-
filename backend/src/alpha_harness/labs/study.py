@@ -437,14 +437,19 @@ class Optimizer:
                 ).tuples()
             ]
 
+        import warnings
+
+        from optuna.exceptions import ExperimentalWarning
         from optuna.samplers import TPESampler
 
-        sampler = TPESampler(
-            n_startup_trials=params_of(row, SearchParams).n_startup_trials,
-            multivariate=True,
-            group=True,
-            constant_liar=row.batch_size > 1,
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", ExperimentalWarning)
+            sampler = TPESampler(
+                n_startup_trials=params_of(row, SearchParams).n_startup_trials,
+                multivariate=True,
+                group=True,
+                constant_liar=row.batch_size > 1,
+            )
         study = await asyncio.to_thread(_rebuild, sampler, history)
         self.studies[study_id] = study
         return study

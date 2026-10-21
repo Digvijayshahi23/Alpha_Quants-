@@ -44,7 +44,9 @@ const matrix = createRoute({
 const pyramidMatrix = createRoute({
   getParentRoute: () => root,
   path: '/pyramid-matrix',
-  component: lazyRouteComponent(() => import('@/screens/pyramid-matrix'), 'PyramidMatrixScreen'),
+  beforeLoad: () => {
+    throw redirect({ to: '/pyramids' })
+  },
 })
 
 const researchSessions = createRoute({
@@ -59,7 +61,9 @@ const researchSessions = createRoute({
 const pyramidTargets = createRoute({
   getParentRoute: () => root,
   path: '/pyramid-targets',
-  component: lazyRouteComponent(() => import('@/screens/pyramid-targets'), 'PyramidTargetsScreen'),
+  beforeLoad: () => {
+    throw redirect({ to: '/quarter' })
+  },
 })
 
 const data = createRoute({

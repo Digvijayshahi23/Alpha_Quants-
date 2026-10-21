@@ -351,12 +351,19 @@ async def _progress(state: Any, ids: list[int]) -> dict[int, dict[str, Any]]:
         )
         for study_id, n in full_runs.all():
             out[study_id]["fullRuns"] = int(n)
-        # An Alpha that returned no value is scored at the failure value, so it is not a best;
-        # nor is a seed, which was scored before the task began.
-        # Temporarily disabled to prevent SQLite timeouts on 14GB databases
+        # Populate best score from active in-memory Optuna study without slow SQLite scans
         for study_id in ids:
-            out[study_id]["best"] = None
-    return out
+            best_val = None
+            opt_study = state.optimizer.studies.get(study_id)
+            if opt_study:
+                try:
+                    val = opt_study.best_value
+                    if val is not None and val > -900.0:
+                        best_val = round(float(val), 2)
+                except ValueError:
+                    best_val = None
+            out[study_id]["best"] = best_val
+        return out
 
 
 def _fields(space: Any) -> int:
