@@ -1,0 +1,4 @@
+# GitHub Linguist configuration
+*.js linguist-language=JavaScript
+*.jsx linguist-language=JavaScript
+frontend/tools/** linguist-vendored=true

@@ -26,7 +26,7 @@ pre-commit:
       run: uv run pyrefly check
     - name: biome
       root: frontend/
-      glob: "*.{ts,tsx,css,json}"
+      glob: "*.{js,jsx,css,json}"
       run: pnpm exec biome check --write --no-errors-on-unmatched {staged_files}
       stage_fixed: true
     - name: design
@@ -56,9 +56,6 @@ format:
     - name: frontend
       root: frontend/
       run: pnpm format
-    # The frontend's API types, regenerated from the backend's response models.
-    - name: contract
-      run: sh frontend/tools/codegen/generate.sh frontend/src/api/generated.ts
 
 check:
   parallel: true
@@ -76,8 +73,6 @@ check:
     - name: frontend
       root: frontend/
       run: pnpm check
-    - name: contract
-      run: sh frontend/tools/codegen/generate.sh --check frontend/src/api/generated.ts
     - name: design
       run: sh frontend/tools/design-lint.sh DESIGN.md
 

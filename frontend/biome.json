@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true, "root": ".." },
-  "files": { "includes": ["**", "!dist", "!public", "!src/api/generated.ts"] },
+  "files": { "includes": ["**", "!dist", "!public", "!src/api/generated.js"] },
   "formatter": { "indentStyle": "space", "indentWidth": 2, "lineWidth": 100 },
   "javascript": { "formatter": { "quoteStyle": "single", "semicolons": "asNeeded" } },
   "css": { "parser": { "tailwindDirectives": true } },
@@ -15,7 +15,7 @@
         "useExhaustiveDependencies": "error",
         "useHookAtTopLevel": "error"
       },
-      "style": { "useImportType": "error" },
+      "style": { "useImportType": "off" },
       "a11y": {
         "noLabelWithoutControl": {
           "level": "error",
@@ -30,7 +30,7 @@
   },
   "overrides": [
     {
-      "includes": ["src/ui/table.tsx"],
+      "includes": ["src/ui/table.jsx"],
       "linter": { "rules": { "a11y": { "useFocusableInteractive": "off" } } }
     }
   ]
