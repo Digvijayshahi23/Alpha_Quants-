@@ -111,10 +111,8 @@ def follow_file(filepath: str, initial_lines: int = 40):
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else None
     if not target or not os.path.exists(target):
-        # Look for default candidates
         repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         candidates = [
-            "/Users/digvijayshahi/.gemini/antigravity-ide/brain/8a1beb96-3971-4fd2-83e8-6e8d8fbcfc31/.system_generated/tasks/task-173.log",
             os.path.join(repo_root, "backend", "backend.log"),
         ]
         target = next((c for c in candidates if os.path.exists(c)), None)
