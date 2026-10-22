@@ -14,6 +14,7 @@ scores.
 """
 
 import json
+import re
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
@@ -22,6 +23,12 @@ import structlog
 from ..brain.schemas import SimulationRequest, SimulationSettings
 from ..catalog.queries import FieldFilter, Tuple4
 from .fastexpr import OperatorInfo, operator_table
+
+#: Fields that introduce calendar lookahead bias or future announcement metadata
+LOOKAHEAD_FIELD_PATTERNS = re.compile(
+    r"(?:_next_ed_|_next_ed_quarter|_next_eps_date|_next_rep_date|chinascope_secmap|_ww_status)",
+    re.IGNORECASE,
+)
 
 if TYPE_CHECKING:  # pragma: no cover
     import random
@@ -324,7 +331,11 @@ async def field_pool(
         )
         rows = page.get("results") or []
         if rows:
-            found[universe] = {str(r["field_id"]): str(r["field_type"]) for r in rows}
+            found[universe] = {
+                str(r["field_id"]): str(r["field_type"])
+                for r in rows
+                if not LOOKAHEAD_FIELD_PATTERNS.search(str(r["field_id"]))
+            }
 
     fields: dict[str, str] = {}
     for held in found.values():

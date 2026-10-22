@@ -1357,22 +1357,46 @@ async def discover_alphas(
         }
         if not chk_results:
             v_status: Literal["submittable", "pending", "refused", "unvalidated"] = "unvalidated"
-        elif chk_results & REFUSING:
+        failed_chk = [
+            str(c.get("name")) for c in chk if str(c.get("result", "")).upper() in REFUSING
+        ]
+        refused_by = [c for c in failed_chk if str(c).upper() not in IGNORED_CHECKS]
+
+        dead_2y = any(
+            str(c.get("name", "")).upper() == "LOW_2Y_SHARPE"
+            and c.get("value") is not None
+            and isinstance(c.get("value"), (int, float))
+            and float(c.get("value")) <= 0.0
+            for c in chk
+        )
+        concentrated = any(
+            str(c.get("name", "")).upper() == "CONCENTRATED_WEIGHT"
+            and c.get("value") is not None
+            and isinstance(c.get("value"), (int, float))
+            and float(c.get("value")) > 0.10
+            for c in chk
+        )
+        if dead_2y and "LOW_2Y_SHARPE" not in refused_by:
+            refused_by.append("LOW_2Y_SHARPE")
+        if concentrated and "CONCENTRATED_WEIGHT" not in refused_by:
+            refused_by.append("CONCENTRATED_WEIGHT")
+
+        if not chk_results:
+            v_status: Literal["submittable", "pending", "refused", "unvalidated"] = "unvalidated"
+        elif (chk_results & REFUSING) or dead_2y or concentrated:
             v_status = "refused"
         elif chk_results <= {"PASS", "WARNING"}:
             v_status = "submittable"
         else:
             v_status = "pending"
 
-        failed_chk = [
-            str(c.get("name")) for c in chk if str(c.get("result", "")).upper() in REFUSING
-        ]
-        refused_by = [c for c in failed_chk if str(c).upper() not in IGNORED_CHECKS]
         sub_status = str(r.get("status") or "UNSUBMITTED")
         is_submittable = (
             len(refused_by) == 0
             and any(str(c.get("result", "")).upper() == "PASS" for c in chk)
             and sub_status == "UNSUBMITTED"
+            and not dead_2y
+            and not concentrated
         )
 
         alphas.append(
@@ -1446,6 +1470,19 @@ async def submit_alpha_endpoint(body: SubmitAlphaRequest, state: State) -> Submi
         if str(c.get("result", "")).upper() in REFUSING
         and str(c.get("name", "")).upper() not in IGNORED_CHECKS
     ]
+    for c in checks:
+        cname = str(c.get("name", "")).upper()
+        if cname == "LOW_2Y_SHARPE":
+            val = c.get("value")
+            if val is not None and isinstance(val, (int, float)) and float(val) <= 0.0:
+                if "LOW_2Y_SHARPE (regime died in last 2 years)" not in refused:
+                    refused.append("LOW_2Y_SHARPE (regime died in last 2 years)")
+        elif cname == "CONCENTRATED_WEIGHT":
+            val = c.get("value")
+            if val is not None and isinstance(val, (int, float)) and float(val) > 0.10:
+                if "CONCENTRATED_WEIGHT (>10% in single stock)" not in refused:
+                    refused.append("CONCENTRATED_WEIGHT (>10% in single stock)")
+
     if refused and not body.force:
         raise refuse(
             422,

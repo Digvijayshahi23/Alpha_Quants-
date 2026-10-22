@@ -682,7 +682,25 @@ def ranked(
                 # ``IGNORED_CHECKS`` can FAIL without meaning anything about the Alpha --
                 # ``REGULAR_SUBMISSION`` is your submission quota -- so ``verdict`` skips it
                 # and anything counting refusals has to skip it too, or the two disagree.
-                "refusedBy": [c for c in failed if str(c).upper() not in IGNORED_CHECKS],
+                "refusedBy": [
+                    c for c in failed if str(c).upper() not in IGNORED_CHECKS
+                ] + [
+                    "LOW_2Y_SHARPE"
+                    for c in (result.get("checks") or [])
+                    if str(c.get("name", "")).upper() == "LOW_2Y_SHARPE"
+                    and c.get("value") is not None
+                    and isinstance(c.get("value"), (int, float))
+                    and float(c.get("value")) <= 0.0
+                    and "LOW_2Y_SHARPE" not in failed
+                ] + [
+                    "CONCENTRATED_WEIGHT"
+                    for c in (result.get("checks") or [])
+                    if str(c.get("name", "")).upper() == "CONCENTRATED_WEIGHT"
+                    and c.get("value") is not None
+                    and isinstance(c.get("value"), (int, float))
+                    and float(c.get("value")) > 0.10
+                    and "CONCENTRATED_WEIGHT" not in failed
+                ],
                 "submittable": submittable(result),
                 "pending": still_judging(result),
                 "quick": bool(result.get("quick")),

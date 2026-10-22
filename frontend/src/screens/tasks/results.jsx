@@ -177,6 +177,7 @@ export function TaskResultsScreen() {
     queryKey: ['lab-tasks', id, 'results'],
     queryFn: () => labTasks.top(id, LIMIT),
     enabled: Number.isFinite(id),
+    refetchInterval: task?.status === 'RUNNING' ? 2500 : 15000,
   })
   const rows = useMemo(() => top.data ?? [], [top.data])
   const byRegion = useMemo(() => {

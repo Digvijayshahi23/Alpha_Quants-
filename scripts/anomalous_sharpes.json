@@ -1,0 +1,7338 @@
+[
+  {
+    "trial_id": 30270,
+    "study_id": 28,
+    "alpha_id": "9qWzJ8xo",
+    "expression": "ts_max_diff(ts_zscore(ts_backfill(vec_min(cfg2_top600_replicator2), 21), 21), 126)",
+    "sharpe": 7.63,
+    "fitness": 18.21,
+    "turnover": 0.4278,
+    "returns": 2.4364,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 7.63,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 18.21,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4278,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4278,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.305576,
+        "matched": null,
+        "unmatched": null,
+        "date": "2022-07-05"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 3.62,
+        "value": 12.95,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1,
+        "value": 7.4,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.3,
+        "pyramids": [
+          {
+            "name": "GBR/D1/RISK",
+            "multiplier": 1.3
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "All regions/D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-09-29 15:25:21.803066"
+  },
+  {
+    "trial_id": 32199,
+    "study_id": 28,
+    "alpha_id": "ZYARd3W8",
+    "expression": "ts_product(ts_backfill(vec_avg(ern6_3q), 21), 5)",
+    "sharpe": 5.91,
+    "fitness": 2.59,
+    "turnover": 0.4197,
+    "returns": 0.0806,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.91,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 2.59,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4197,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4197,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.8,
+        "value": 12.41,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1,
+        "value": 10.19,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.4,
+        "pyramids": [
+          {
+            "name": "GBR/D1/EARNINGS",
+            "multiplier": 1.4
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "All regions/D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-09-29 17:47:07.080007"
+  },
+  {
+    "trial_id": 32493,
+    "study_id": 28,
+    "alpha_id": "zqbvG0LE",
+    "expression": "ts_product(ts_backfill(vec_avg(ern6_2q), 21), 5)",
+    "sharpe": 5.91,
+    "fitness": 2.59,
+    "turnover": 0.4197,
+    "returns": 0.0806,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.91,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 2.59,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4197,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4197,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.8,
+        "value": 12.37,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1,
+        "value": 10.19,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.4,
+        "pyramids": [
+          {
+            "name": "GBR/D1/EARNINGS",
+            "multiplier": 1.4
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "All regions/D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-09-29 18:07:57.717601"
+  },
+  {
+    "trial_id": 65235,
+    "study_id": 64,
+    "alpha_id": "akxEKaG1",
+    "expression": "ts_returns(ts_backfill(vec_avg(ern6_eps6ww_status_273), 21), 252)",
+    "sharpe": 7.18,
+    "fitness": 32.84,
+    "turnover": 0.125,
+    "returns": 2.6155,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 7.18,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 32.84,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.125,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.125,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.5,
+        "matched": null,
+        "unmatched": null,
+        "date": "2021-05-27"
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 7.18,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-06 15:46:00.399677"
+  },
+  {
+    "trial_id": 65776,
+    "study_id": 64,
+    "alpha_id": "vR2vpRJ3",
+    "expression": "ts_max_diff(ts_backfill(vec_avg(preliminary_eps_range_lower_bound), 21), 252)",
+    "sharpe": 9.56,
+    "fitness": 35.86,
+    "turnover": 0.2105,
+    "returns": 2.962,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 9.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 35.86,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.2105,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.2105,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.5,
+        "matched": null,
+        "unmatched": null,
+        "date": "2023-09-15"
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 9.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-06 16:14:35.476397"
+  },
+  {
+    "trial_id": 66410,
+    "study_id": 64,
+    "alpha_id": "gJZ90zXl",
+    "expression": "ts_returns(ts_backfill(vec_max(ern6_eps6ww_status_273), 21), 252)",
+    "sharpe": 7.18,
+    "fitness": 32.84,
+    "turnover": 0.125,
+    "returns": 2.6155,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 7.18,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 32.84,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.125,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.125,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.5,
+        "matched": null,
+        "unmatched": null,
+        "date": "2021-05-27"
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 7.18,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-06 16:51:57.408763"
+  },
+  {
+    "trial_id": 71560,
+    "study_id": 70,
+    "alpha_id": "O08Nr36R",
+    "expression": "group_rank(ts_backfill(tier1_broker_concentration_index, 21), market)",
+    "sharpe": 5.47,
+    "fitness": 2.59,
+    "turnover": 0.5449,
+    "returns": 0.1223,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 2.69,
+        "value": 5.47,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.5,
+        "value": 2.59,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.5449,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.5449,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.37,
+        "value": 2.44,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 3.3,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 2.69,
+        "value": 1.77,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.7,
+        "pyramids": [
+          {
+            "name": "USA/D0/OTHER",
+            "multiplier": 1.7
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-07 20:50:01.329075"
+  },
+  {
+    "trial_id": 83038,
+    "study_id": 84,
+    "alpha_id": "LLZz8Nn2",
+    "expression": "group_std_dev(ts_backfill(vec_stddev(ern4_20dclshvxern), 21), industry)",
+    "sharpe": 8.54,
+    "fitness": 7.8,
+    "turnover": 0.3992,
+    "returns": 0.3334,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 8.54,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 7.8,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.3992,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.3992,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 6.07,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "USA/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-10 08:50:50.637574"
+  },
+  {
+    "trial_id": 84012,
+    "study_id": 85,
+    "alpha_id": "LLZz2O59",
+    "expression": "ts_decay_linear(ts_delay(ts_backfill(vec_stddev(one_year_ex_announcement_implied_volatility_2), 21), 126), 21)",
+    "sharpe": 6.94,
+    "fitness": 13.38,
+    "turnover": 0.1088,
+    "returns": 0.4649,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 6.94,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 13.38,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.1088,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.1088,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 3.01,
+        "value": 3.61,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 6.73,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "USA/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-10 09:30:07.642414"
+  },
+  {
+    "trial_id": 84408,
+    "study_id": 86,
+    "alpha_id": "akxz0gVv",
+    "expression": "ts_ir(ts_backfill(vec_range(ern4_erneffct7), 21), 21)",
+    "sharpe": 5.06,
+    "fitness": 15.19,
+    "turnover": 0.1429,
+    "returns": 1.2878,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.06,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 15.19,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.1429,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.1429,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.5,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-12-21"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.19,
+        "value": 2.42,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 2.89,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "USA/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-10 10:01:45.464324"
+  },
+  {
+    "trial_id": 85026,
+    "study_id": 86,
+    "alpha_id": "786M8622",
+    "expression": "rank(ts_backfill(vec_stddev(ern4_avg20doptvolu), 21))",
+    "sharpe": 6.15,
+    "fitness": 7.94,
+    "turnover": 0.0974,
+    "returns": 0.2084,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 6.15,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 7.94,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.0974,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.0974,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 3.13,
+        "value": 4.82,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 6.4,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "USA/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-10 10:30:31.132993"
+  },
+  {
+    "trial_id": 86548,
+    "study_id": 87,
+    "alpha_id": "P0g8p3Zp",
+    "expression": "rank(ts_decay_linear(ts_backfill(vec_stddev(ern4_erneffct4), 21), 5))",
+    "sharpe": 5.74,
+    "fitness": 6.64,
+    "turnover": 0.3752,
+    "returns": 0.5017,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.74,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 6.64,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.3752,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.3752,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.92,
+        "value": 3.19,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.68,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "USA/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-10 13:00:10.880260"
+  },
+  {
+    "trial_id": 86630,
+    "study_id": 87,
+    "alpha_id": "GrOxwZ25",
+    "expression": "rank(ts_decay_linear(ts_backfill(vec_stddev(ern4_erneffct4), 21), 252))",
+    "sharpe": 5.74,
+    "fitness": 6.64,
+    "turnover": 0.3752,
+    "returns": 0.5017,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.74,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 6.64,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.3752,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.3752,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.92,
+        "value": 3.19,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.68,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "USA/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-10 13:04:27.127302"
+  },
+  {
+    "trial_id": 87030,
+    "study_id": 87,
+    "alpha_id": "j28x60Po",
+    "expression": "winsorize(ts_backfill(vec_stddev(ern4_ernstrapct4), 21))",
+    "sharpe": 5.46,
+    "fitness": 6.54,
+    "turnover": 0.5526,
+    "returns": 0.794,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.46,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 6.54,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.5526,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.5526,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.59,
+        "value": 5.75,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.47,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_COMPETITION",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "competitions": [
+          {
+            "id": "ARC2026",
+            "name": "All Region Competition 2026"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "USA/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "JypwPb4",
+            "multiplier": 2.5,
+            "name": "GLB/D1 TOPDIV3000 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "by88jXy",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-10 13:27:01.218152"
+  },
+  {
+    "trial_id": 96693,
+    "study_id": 103,
+    "alpha_id": "Vkdk1bv8",
+    "expression": "group_std_dev(ts_product(ts_backfill(vec_max(ern6_next_ed_quarter_217), 21), 126), market)",
+    "sharpe": 5.02,
+    "fitness": 2.89,
+    "turnover": 0.6185,
+    "returns": 0.2055,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 5.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 2.89,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6185,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6185,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 1.5,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 10:42:20.532784"
+  },
+  {
+    "trial_id": 98178,
+    "study_id": 103,
+    "alpha_id": "Vkdk2W7G",
+    "expression": "zscore(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.72,
+    "fitness": 36.35,
+    "turnover": 0.6667,
+    "returns": 3.1505,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 36.35,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.25,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-13"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.69,
+        "value": 17.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:32:53.042091"
+  },
+  {
+    "trial_id": 98182,
+    "study_id": 103,
+    "alpha_id": "P0M0wVZL",
+    "expression": "zscore(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.88,
+    "fitness": 33.67,
+    "turnover": 0.681,
+    "returns": 2.71,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 33.67,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.202699,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-10"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.77,
+        "value": 18.06,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.79,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:32:53.042092"
+  },
+  {
+    "trial_id": 98202,
+    "study_id": 103,
+    "alpha_id": "e767nkZ6",
+    "expression": "zscore(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 12.34,
+    "fitness": 13.09,
+    "turnover": 0.686,
+    "returns": 0.7714,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 12.34,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 13.09,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.686,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.686,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 6.41,
+        "value": 18.26,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 15.41,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:34:09.755886"
+  },
+  {
+    "trial_id": 98219,
+    "study_id": 103,
+    "alpha_id": "Vkdk2W7G",
+    "expression": "zscore(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.72,
+    "fitness": 36.35,
+    "turnover": 0.6667,
+    "returns": 3.1505,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 36.35,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.25,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-13"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.69,
+        "value": 17.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:34:51.754352"
+  },
+  {
+    "trial_id": 98267,
+    "study_id": 103,
+    "alpha_id": "QPYPnlPr",
+    "expression": "winsorize(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.88,
+    "fitness": 33.67,
+    "turnover": 0.681,
+    "returns": 2.71,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 33.67,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.202699,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-10"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.77,
+        "value": 18.06,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.78,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:36:47.811060"
+  },
+  {
+    "trial_id": 98268,
+    "study_id": 103,
+    "alpha_id": "MP0Pb8Pa",
+    "expression": "winsorize(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.72,
+    "fitness": 36.35,
+    "turnover": 0.6667,
+    "returns": 3.1505,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 36.35,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.25,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-13"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.69,
+        "value": 17.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:36:47.811061"
+  },
+  {
+    "trial_id": 98274,
+    "study_id": 103,
+    "alpha_id": "VkdkXlV0",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.72,
+    "fitness": 36.35,
+    "turnover": 0.6667,
+    "returns": 3.1505,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 36.35,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.25,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-13"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.69,
+        "value": 17.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:36:47.811063"
+  },
+  {
+    "trial_id": 98290,
+    "study_id": 103,
+    "alpha_id": "vROR5lLw",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.88,
+    "fitness": 33.67,
+    "turnover": 0.681,
+    "returns": 2.71,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 33.67,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.202699,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-10"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.77,
+        "value": 18.06,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.79,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:38:00.247279"
+  },
+  {
+    "trial_id": 98292,
+    "study_id": 103,
+    "alpha_id": "MP0Pb8Pa",
+    "expression": "winsorize(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.72,
+    "fitness": 36.35,
+    "turnover": 0.6667,
+    "returns": 3.1505,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 36.35,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.25,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-13"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.69,
+        "value": 17.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:38:00.247279"
+  },
+  {
+    "trial_id": 98298,
+    "study_id": 103,
+    "alpha_id": "VkdkXlV0",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.72,
+    "fitness": 36.35,
+    "turnover": 0.6667,
+    "returns": 3.1505,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 36.35,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6667,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.25,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-13"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.69,
+        "value": 17.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:38:21.070513"
+  },
+  {
+    "trial_id": 98299,
+    "study_id": 103,
+    "alpha_id": "vROR5lLw",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5))",
+    "sharpe": 16.88,
+    "fitness": 33.67,
+    "turnover": 0.681,
+    "returns": 2.71,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 33.67,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.202699,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-10"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.77,
+        "value": 18.06,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.79,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:38:21.070514"
+  },
+  {
+    "trial_id": 98324,
+    "study_id": 103,
+    "alpha_id": "RRARNoLz",
+    "expression": "zscore(ts_zscore(ts_backfill(vec_min(ern6_ww_status), 21), 5))",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:38:42.140588"
+  },
+  {
+    "trial_id": 98438,
+    "study_id": 103,
+    "alpha_id": "78o8JX92",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_min(ern6_ww_status), 21), 5))",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:44:24.302160"
+  },
+  {
+    "trial_id": 98460,
+    "study_id": 103,
+    "alpha_id": "GrgrkoEo",
+    "expression": "ts_zscore(ts_backfill(vec_min(ern6_company_name_264), 21), 5)",
+    "sharpe": 16.88,
+    "fitness": 33.67,
+    "turnover": 0.681,
+    "returns": 2.71,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.88,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 33.67,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.681,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.202699,
+        "matched": null,
+        "unmatched": null,
+        "date": "2019-05-10"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.77,
+        "value": 18.06,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.78,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:45:18.509564"
+  },
+  {
+    "trial_id": 98539,
+    "study_id": 103,
+    "alpha_id": "ZYmYrMQ8",
+    "expression": "ts_zscore(ts_backfill(vec_min(ern6_ww_status), 21), 5)",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:47:26.915759"
+  },
+  {
+    "trial_id": 98544,
+    "study_id": 103,
+    "alpha_id": "YPxPQJ8v",
+    "expression": "quantile(ts_scale(ts_backfill(vec_range(ern6_ww_status), 21), 5))",
+    "sharpe": 8.65,
+    "fitness": 11.2,
+    "turnover": 0.4412,
+    "returns": 0.7398,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 8.65,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 11.2,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179412,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-21"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 4.49,
+        "value": 12.08,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 11.4,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:47:26.915760"
+  },
+  {
+    "trial_id": 98548,
+    "study_id": 103,
+    "alpha_id": "RRARdKOn",
+    "expression": "quantile(ts_scale(ts_backfill(vec_min(ern6_ww_status), 21), 5))",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:48:50.929467"
+  },
+  {
+    "trial_id": 98562,
+    "study_id": 103,
+    "alpha_id": "9qEqRzk1",
+    "expression": "winsorize(ts_zscore(ts_backfill(vec_min(ern6_ww_status), 21), 5))",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:48:56.633254"
+  },
+  {
+    "trial_id": 98565,
+    "study_id": 103,
+    "alpha_id": "3qjqAM2g",
+    "expression": "normalize(ts_zscore(ts_backfill(vec_stddev(ern6_ww_status), 21), 5))",
+    "sharpe": 8.65,
+    "fitness": 11.2,
+    "turnover": 0.4412,
+    "returns": 0.7398,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 8.65,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 11.2,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179412,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-21"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 4.49,
+        "value": 12.08,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 11.4,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:48:56.633255"
+  },
+  {
+    "trial_id": 98566,
+    "study_id": 103,
+    "alpha_id": "YPxPAj9v",
+    "expression": "scale(ts_zscore(ts_backfill(vec_min(ern6_ww_status), 21), 5))",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:48:56.633255"
+  },
+  {
+    "trial_id": 98601,
+    "study_id": 103,
+    "alpha_id": "ZYmYrMQ8",
+    "expression": "ts_zscore(ts_backfill(vec_min(ern6_ww_status), 21), 5)",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:50:11.320960"
+  },
+  {
+    "trial_id": 98624,
+    "study_id": 103,
+    "alpha_id": "pwvw7mXv",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_stddev(ern6_ww_status), 21), 5))",
+    "sharpe": 8.65,
+    "fitness": 11.2,
+    "turnover": 0.4412,
+    "returns": 0.7398,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 8.65,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 11.2,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179412,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-21"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 4.49,
+        "value": 12.08,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 11.4,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:50:26.731067"
+  },
+  {
+    "trial_id": 98638,
+    "study_id": 103,
+    "alpha_id": "O0J095aJ",
+    "expression": "ts_scale(ts_backfill(vec_min(ern6_ww_status), 21), 5)",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:52:02.016173"
+  },
+  {
+    "trial_id": 98640,
+    "study_id": 103,
+    "alpha_id": "Vkdk8YoV",
+    "expression": "ts_scale(ts_backfill(vec_range(ern6_ww_status), 21), 5)",
+    "sharpe": 8.65,
+    "fitness": 11.2,
+    "turnover": 0.4412,
+    "returns": 0.7398,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 8.65,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 11.2,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179412,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-21"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 4.49,
+        "value": 12.08,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 11.43,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:52:02.016173"
+  },
+  {
+    "trial_id": 98641,
+    "study_id": 103,
+    "alpha_id": "YPxPAWdW",
+    "expression": "ts_scale(ts_backfill(vec_stddev(ern6_ww_status), 21), 5)",
+    "sharpe": 8.65,
+    "fitness": 11.2,
+    "turnover": 0.4412,
+    "returns": 0.7398,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 8.65,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 11.2,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179412,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-21"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 4.49,
+        "value": 12.08,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 11.43,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:52:02.016173"
+  },
+  {
+    "trial_id": 98645,
+    "study_id": 103,
+    "alpha_id": "JjPjd5lm",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_min(ern6_ww_status), 21), 5))",
+    "sharpe": 16.74,
+    "fitness": 20.71,
+    "turnover": 0.6875,
+    "returns": 1.0518,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 16.74,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 20.71,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6875,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6875,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.7,
+        "value": 17.72,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": -9.4,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:52:02.016174"
+  },
+  {
+    "trial_id": 98647,
+    "study_id": 103,
+    "alpha_id": "O0J095aJ",
+    "expression": "ts_scale(ts_backfill(vec_min(ern6_ww_status), 21), 5)",
+    "sharpe": 17.0,
+    "fitness": 24.56,
+    "turnover": 0.6884,
+    "returns": 1.4368,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 24.56,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.6884,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179119,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-25"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 8.83,
+        "value": 16.62,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 17.02,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:52:34.782978"
+  },
+  {
+    "trial_id": 98657,
+    "study_id": 103,
+    "alpha_id": "1YjYgXdJ",
+    "expression": "ts_zscore(ts_backfill(vec_stddev(ern6_ww_status), 21), 5)",
+    "sharpe": 8.65,
+    "fitness": 11.2,
+    "turnover": 0.4412,
+    "returns": 0.7398,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 8.65,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 11.2,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.4412,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.179412,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-21"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 4.49,
+        "value": 12.08,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 11.4,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:52:40.555762"
+  },
+  {
+    "trial_id": 98756,
+    "study_id": 103,
+    "alpha_id": "A1Q1w3zW",
+    "expression": "quantile(ts_zscore(ts_backfill(vec_range(ern6_ww_status), 21), 5))",
+    "sharpe": 9.71,
+    "fitness": 13.7,
+    "turnover": 0.5096,
+    "returns": 1.0138,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 9.71,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 13.7,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.5096,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.7,
+        "value": 0.5096,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.210025,
+        "matched": null,
+        "unmatched": null,
+        "date": "2018-06-22"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 5.05,
+        "value": 11.49,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 11.95,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "EUR/D1/EARNINGS",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-13 12:57:06.365786"
+  },
+  {
+    "trial_id": 129056,
+    "study_id": 135,
+    "alpha_id": "YPx00Ngo",
+    "expression": "group_scale(ts_delta(fnd4_chinascope_secmap, 5), market)",
+    "sharpe": 10.06,
+    "fitness": 33.89,
+    "turnover": 0.3333,
+    "returns": 3.7835,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 10.06,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 33.89,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.3333,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.4,
+        "value": 0.3333,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.5,
+        "matched": null,
+        "unmatched": null,
+        "date": "2016-11-03"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 2.97,
+        "value": 6.39,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1,
+        "value": 10.27,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_ROBUST_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 1,
+        "value": 6.07,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "IND/D1/FUNDAMENTAL",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-19 12:43:43.316223"
+  },
+  {
+    "trial_id": 129850,
+    "study_id": 135,
+    "alpha_id": "RRA8goj1",
+    "expression": "rank(sign(ts_delta(fnd4_chinascope_secmap, 5)) * fnd4_chinascope_secmap)",
+    "sharpe": 6.39,
+    "fitness": 10.95,
+    "turnover": 0.3333,
+    "returns": 0.9784,
+    "checks": [
+      {
+        "name": "LOW_SHARPE",
+        "result": "PASS",
+        "limit": 1.58,
+        "value": 6.39,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_FITNESS",
+        "result": "PASS",
+        "limit": 1.0,
+        "value": 10.95,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_TURNOVER",
+        "result": "PASS",
+        "limit": 0.01,
+        "value": 0.3333,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "HIGH_TURNOVER",
+        "result": "PASS",
+        "limit": 0.4,
+        "value": 0.3333,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CONCENTRATED_WEIGHT",
+        "result": "WARNING",
+        "limit": 0.1,
+        "value": 0.5,
+        "matched": null,
+        "unmatched": null,
+        "date": "2016-11-03"
+      },
+      {
+        "name": "LOW_SUB_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 1.89,
+        "value": 4.17,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "CLUSTER_TEST",
+        "result": "PASS",
+        "limit": 1,
+        "value": 10.9,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_ROBUST_UNIVERSE_SHARPE",
+        "result": "PASS",
+        "limit": 1,
+        "value": 3.9,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "SELF_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "DATA_DIVERSITY",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "PROD_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "LOW_2Y_SHARPE",
+        "result": "WARNING",
+        "limit": 1.58,
+        "value": 0.0,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "POWER_POOL_CORRELATION",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null
+      },
+      {
+        "name": "MATCHES_PYRAMID",
+        "result": "PASS",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "effective": 1,
+        "multiplier": 1.2,
+        "pyramids": [
+          {
+            "name": "IND/D1/FUNDAMENTAL",
+            "multiplier": 1.2
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "WARNING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "YynpPwD",
+            "multiplier": 2.0,
+            "name": "AMR/D1 Theme"
+          }
+        ]
+      },
+      {
+        "name": "MATCHES_THEMES",
+        "result": "PENDING",
+        "limit": null,
+        "value": null,
+        "matched": null,
+        "unmatched": null,
+        "themes": [
+          {
+            "id": "ZDXgJ5B",
+            "multiplier": 1.0,
+            "name": "D1 Power Pool Oct`26 2"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-10-19 15:43:37.977282"
+  }
+]

@@ -206,6 +206,10 @@ export function TasksScreen() {
   const list = useQuery({
     queryKey: ['lab-tasks'],
     queryFn: labTasks.list,
+    refetchInterval: (query) => {
+      const tasks = query.state.data?.tasks ?? []
+      return tasks.some((t) => t.status === 'RUNNING' || t.status === 'QUEUED') ? 2000 : 10000
+    },
   })
   const discovery = useQuery({
     queryKey: ['lab-tasks', 'discovery-summary'],
@@ -213,10 +217,14 @@ export function TasksScreen() {
       labTasks.discovery({
         limit: 1,
       }),
+    refetchInterval: () => {
+      const tasks = list.data?.tasks ?? []
+      return tasks.some((t) => t.status === 'RUNNING') ? 5000 : 30000
+    },
   })
-  useRefetchOn('studies', ['lab-tasks'], 2_000)
-  useRefetchOn('simulations', ['lab-tasks'], 5_000)
-  useRefetchOn('simulations', ['lab-tasks', 'discovery-summary'], 10_000)
+  useRefetchOn('studies', ['lab-tasks'], 1_500)
+  useRefetchOn('simulations', ['lab-tasks'], 3_000)
+  useRefetchOn('simulations', ['lab-tasks', 'discovery-summary'], 5_000)
   const [selectedId, setSelectedId] = useState(null)
   const [editing, setEditing] = useState(null)
   const [renaming, setRenaming] = useState(null)

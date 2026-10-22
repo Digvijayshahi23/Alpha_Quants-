@@ -140,6 +140,18 @@ def constraints(alpha: Alpha) -> tuple[dict[str, float], list[dict[str, Any]]]:
 
 
 def _violation(check: Check) -> float:
+    # Quality safeguards: penalize dead 2Y Sharpe or severe concentration even if BRAIN labels as WARNING
+    if check.name == "LOW_2Y_SHARPE":
+        if check.numbers:
+            val, _ = check.numbers
+            if val <= 0.0:
+                return 1.0
+    elif check.name == "CONCENTRATED_WEIGHT":
+        if check.numbers:
+            val, limit = check.numbers
+            if val > 0.10:
+                return abs(val - limit)
+
     if check.result in (CheckResult.PASS, CheckResult.WARNING, CheckResult.PENDING, None):
         return 0.0
     numbers = check.numbers

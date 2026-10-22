@@ -147,6 +147,19 @@ def verdict(checks: list[dict[str, Any]], simulation_mode: str | None = None) ->
         return None
     if results & REFUSING:
         return "refused"
+
+    # Strict quality safeguards: reject alphas that died in recent 2 years or concentrated >10% in one stock
+    for c in checks:
+        cname = str(c.get("name", "")).upper()
+        if cname == "LOW_2Y_SHARPE":
+            val = c.get("value")
+            if val is not None and isinstance(val, (int, float)) and val <= 0.0:
+                return "refused"
+        elif cname == "CONCENTRATED_WEIGHT":
+            val = c.get("value")
+            if val is not None and isinstance(val, (int, float)) and val > 0.10:
+                return "refused"
+
     if results <= {"PASS", "WARNING"}:
         return "submittable"
     return "pending"

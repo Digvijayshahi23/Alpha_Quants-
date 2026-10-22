@@ -56,6 +56,7 @@ function HeaderCores() {
   const engine = useQuery({
     queryKey: ['simulations', 'engine'],
     queryFn: () => simulations.engine(),
+    refetchInterval: 3000,
   })
   useRefetchOn('simulations', ['simulations', 'engine'], 2000)
   const slots = engine.data?.slots ?? 8
